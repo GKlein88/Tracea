@@ -1,19 +1,50 @@
 from shapely.geometry import LineString
+
+from app.geo.statistics import haversine_distance
 from app.models.activity import GPSPoint
 
 
-def simplify_points(points, tolerance=0.00001):
+def _remove_visually_close_points(
+    points: list[GPSPoint],
+    min_distance_m: float
+) -> list[GPSPoint]:
+    if not points:
+        return []
+
+    simplified = [points[0]]
+
+    for point in points[1:]:
+        distance = haversine_distance(simplified[-1], point)
+
+        if distance * 1000 < min_distance_m:
+            continue
+
+        simplified.append(point)
+
+    return simplified
+
+
+def simplify_points(
+    points: list[GPSPoint],
+    tolerance: float = 0.00001,
+    min_distance_m: float = 5
+) -> list[GPSPoint]:
     """
-    Simplify a GPS track while preserving its overall shape.
+    Simplify a GPS track for visual rendering.
     """
 
-    if len(points) < 3:
-        return points
+    visually_reduced_points = _remove_visually_close_points(
+        points=points,
+        min_distance_m=min_distance_m
+    )
+
+    if len(visually_reduced_points) < 3:
+        return visually_reduced_points
 
     line = LineString(
         [
             (point.lon, point.lat)
-            for point in points
+            for point in visually_reduced_points
         ]
     )
 

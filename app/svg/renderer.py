@@ -44,13 +44,14 @@ def generate_svg(
     # Create GPS track path
     path_data = create_path(points)
 
-    dwg.add(
-        dwg.path(
-            d=path_data,
-            fill="none",
-            stroke="black",
-            stroke_width=4
+    if path_data:
+        dwg.add(
+            dwg.path(
+                d=path_data,
+                fill="none",
+                stroke="black",
+                stroke_width=4
+            )
         )
-    )
 
     dwg.save()
