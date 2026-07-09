@@ -22,16 +22,16 @@ templates = Jinja2Templates(
     directory="app/templates"
 )
 
-# app.mount(
-#     "/static",
-#     StaticFiles(directory="app/static"),
-#     name="static"
-# )
-
 app.mount(
     "/outputs",
     StaticFiles(directory="outputs"),
     name="outputs"
+)
+
+app.mount(
+    "/static",
+    StaticFiles(directory="app/static"),
+    name="static"
 )
 
 app.include_router(router)

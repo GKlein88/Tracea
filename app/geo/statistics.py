@@ -53,7 +53,7 @@ def calculate_distance(
 
         total += segment
 
-    return round(total, 2)
+    return round(total, 1)
 
 
 def calculate_elevation_gain(

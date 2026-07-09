@@ -1,0 +1,129 @@
+@font-face {
+    font-family: "FuturaPT";
+    src: url("/static/fonts/Futura/FuturaLT-Light.woff2") format("woff2");
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "FuturaPT";
+    src: url("/static/fonts/Futura/FuturaLT.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "FuturaPT";
+    src: url("/static/fonts/Futura/FuturaLT-Bold.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "FuturaPT";
+    src: url("/static/fonts/Futura/FuturaLT-ExtraBold.woff2") format("woff2");
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+@font-face {
+    font-family: "FuturaPT Condensed";
+    src: url("/static/fonts/Futura/FuturaLT-CondensedLight.woff2") format("woff2");
+    font-weight: 200;
+    font-style: normal;
+    font-stretch: condensed;
+    font-display: swap;
+}
+@font-face {
+    font-family: "FuturaPT Condensed";
+    src: url("/static/fonts/Futura/FuturaLT-Condensed.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-stretch: condensed;
+    font-display: swap;
+}
+@font-face {
+    font-family: "FuturaPT Condensed";
+    src: url("/static/fonts/Futura/FuturaLT-CondensedBold.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-stretch: condensed;
+    font-display: swap;
+}
+@font-face {
+    font-family: "FuturaPT Condensed";
+    src: url("/static/fonts/Futura/FuturaLT-CondensedExtraBold.woff2") format("woff2");
+    font-weight: 800;
+    font-style: normal;
+    font-stretch: condensed;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "FuturaPT";
+    src: url("/static/fonts/Futura/FuturaLT-Heavy.woff2") format("woff2");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+
+@font-face {
+    font-family: "SFUI";
+    src: url("/static/fonts/SFUI/SFUIDisplay-Ultralight.woff2") format("woff2");
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "SFUI";
+    src: url("/static/fonts/SFUI/SFUIDisplay-Thin.woff2") format("woff2");
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "SFUI";
+    src: url("/static/fonts/SFUI/SFUIDisplay-Light.woff2") format("woff2");
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "SFUI";
+    src: url("/static/fonts/SFUI/SFUIDisplay-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "SFUI";
+    src: url("/static/fonts/SFUI/SFUIDisplay-Medium.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "SFUI";
+    src: url("/static/fonts/SFUI/SFUIDisplay-Semibold.woff2") format("woff2");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "SFUI";
+    src: url("/static/fonts/SFUI/SFUIDisplay-Bold.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "SFUI";
+    src: url("/static/fonts/SFUI/SFUIDisplay-Heavy.woff2") format("woff2");
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}

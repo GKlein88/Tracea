@@ -1,23 +1,245 @@
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background: #fafafa;
+:root {
+    --background: #FAFAFA;
+    --surface: #FFFFFF;
+    --text-primary: #111111;
+    --text-secondary: #666666;    
+    --text-light: #999999;
+
+    /* Tracéa brand */
+    --accent: #365314;
+    --accent-hover: #365314;
 }
 
-.container {
-    max-width: 600px;
-    margin: 100px auto;
+
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+    margin: 0;
+    background: var(--background);
+    color: var(--text);
+    font-family: "SFUI", sans-serif;
+}
+
+
+
+/* Header */
+
+.header {
+    max-width: 1200px;
+    margin: auto;
+    padding: 32px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.logo {
+    font-family: "FuturaPT Condensed", sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+}
+
+
+.navigation {
+    display: flex;
+    gap: 32px;
+}
+
+
+.navigation a {
+    color: var(--text-secondary);
+    font-size: 15px;
+}
+
+
+
+/* Hero */
+
+.hero {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: minmax(400px, 1fr) minmax(360px, 480px);
+    gap: 80px;
+    align-items: start;
+}
+
+
+.hero h1 {
+    font-family: "SFUI", sans-serif;
+    font-weight: 700;
+    font-size: 72px;
+    line-height: 1.05;
+    letter-spacing: -2px;
+    margin: 10px 0 30px;
+}
+
+
+
+.hero-description {
+    font-size: 20px;
+    color: var(--text-secondary);
+    max-width: 450px;
+    margin-bottom: 40px;
+}
+
+
+.hero-note {
+    font-size: 18px;
+    display: block;
+    margin-top: 40px;
+    color: var(--text-secondary);
+}
+
+.hero .file-name {
+    margin-top: 10px;
+    margin-left: 2px;
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.hero-visual {
+    width: 100%;
+    max-width: 480px;
+    min-width: 380px;
+}
+
+.hero-content {
+    width: 100%;
+    max-width: 800px;
+    min-width: 500px;
+}
+
+
+
+
+/* Button */
+
+.primary-button {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 18px 42px;
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.primary-button:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+}
+
+.primary-button:active {
+    transform: translateY(0);
+    }
+
+
+.hero-benefits {
+    margin-top: 45px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+
+.benefit-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+
+.benefit-icon {
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 700;
+}
+
+
+
+/* Poster placeholder */
+
+.poster-placeholder {
+    aspect-ratio: 3 / 4;
+    height: auto;
+    background: var(--surface);
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.08);
+}
+
+
+.poster-placeholder p {
+    text-align: center;
+    font-family: "SFUI";
+    font-weight: 700;
+    font-size: 32px;
+    color: var(--text-light)
+}
+
+
+.poster-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 24px;
+}
+
+/* Activity info */
+
+.activity-info {
+    margin-top: 24px;
     text-align: center;
 }
 
-h1 {
-    font-size: 64px;
-    letter-spacing: -3px;
+
+.activity-info h3 {
+    margin: 0 0 16px;
+    font-family: "SFUI", sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
 }
 
-button {
-    margin-top: 25px;
-    padding: 14px 30px;
-    border-radius: 30px;
-    border: none;
-    cursor: pointer;
+
+
+.activity-stats {
+    display: flex;
+    justify-content: space-between;
+    max-width: 320px;
+    margin: auto;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+
+
+.activity-note {
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-align: right;
+}
+
+
+
+/* Footer */
+
+.footer {
+    margin-top: 10px;
+    text-align: center;
 }

@@ -1,65 +1,175 @@
-<form id="upload-form">
+<!DOCTYPE html>
+<html lang="en">
 
-    <input 
-        type="file" 
-        id="file"
-        accept=".gpx"
-        required
-    >
+<head>
 
-    <button type="submit">
-        Créer mon poster
-    </button>
+    <meta charset="UTF-8">
 
-</form>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Tracéa — Premium Sport Wall Art
+    </title>
 
 
-<div id="result"></div>
+    <!-- Load fonts -->
+    <link rel="stylesheet" href="/static/css/fonts.css">
 
 
-<script>
+    <!-- Load website styles -->
+    <link rel="stylesheet" href="/static/css/style.css">
 
-const form = document.getElementById("upload-form");
-
-form.addEventListener("submit", async (event) => {
-
-    event.preventDefault();
-
-    const file = document.getElementById("file").files[0];
-
-    const data = new FormData();
-    data.append("file", file);
+</head>
 
 
-    const response = await fetch("/generate", {
-        method: "POST",
-        body: data
-    });
+<body>
+
+    <!-- Header -->
+    <header class="header">
+
+        <div class="logo">
+            Tracéa
+        </div>
 
 
-    const result = await response.json();
+        <nav class="navigation">
+
+            <a href="#how-it-works">
+                How it works
+            </a>
+
+            <a href="#features">
+                Features
+            </a>
+
+        </nav>
+
+    </header>
 
 
-    document.getElementById("result").innerHTML = `
-        <h2>${result.activity_name}</h2>
+
+    <!-- Main content -->
+    <main>
+
+
+        <!-- Hero section -->
+        <section class="hero">
+
+
+            <!-- Left content -->
+            <div class="hero-content">
+
+
+                <h1>
+                    Turn your activities
+                    into premium wall art.
+                </h1>
+
+
+                <p class="hero-description">
+                    Transform your runs, hikes and rides
+                    into beautifully crafted posters.
+                </p>
+
+
+                <input
+                    type="file"
+                    id="gpx-upload"
+                    accept=".gpx"
+                    hidden
+                >
+
+
+                <button
+                    class="primary-button"
+                    type="button"
+                    id="upload-button"
+                >
+                    Upload activity
+                </button>
+
+
+                <p
+                    id="file-name"
+                    class="file-name"
+                >
+                </p>
+
+
+                <span class="hero-note">
+                    Your route · Your story · Your artwork
+                </span>
+
+                <div class="hero-benefits">
+
+                    <div class="benefit-item">
+                        <span class="benefit-icon">•</span>
+                        SVG vector quality
+                    </div>
+
+
+                    <div class="benefit-item">
+                        <span class="benefit-icon">•</span>
+                        Print ready artwork
+                    </div>
+
+
+                    <div class="benefit-item">
+                        <span class="benefit-icon">•</span>
+                        Created from your GPX data
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- Right visual -->
+            <div class="hero-visual">
+
+
+                <div 
+                    class="poster-placeholder"
+                    id="poster-preview"
+                >
+
+                    <p id="placeholder-text">
+                        Your route<br>
+                        becomes art.
+                    </p>
+
+                </div>
+
+
+                <div 
+                    class="activity-info"
+                    id="activity-info"
+                >
+                </div>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="footer">
 
         <p>
-            ${result.statistics.distance_km} km |
-            ${result.statistics.elevation_gain_m} m D+
+            © 2026 Tracéa
         </p>
 
-        <img 
-            src="${result.svg_url}"
-            style="max-width:500px;"
-        >
+    </footer>
 
-        <br><br>
+    <script src="/static/js/upload.js"></script>
 
-        <a href="${result.svg_url}" download>
-            Télécharger le poster
-        </a>
-    `;
 
-});
+</body>
 
-</script>
+
+</html>
