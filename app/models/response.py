@@ -16,6 +16,7 @@ class PosterFile(BaseModel):
 
 class PosterResponse(BaseModel):
     success: bool
-    track_name: str
+    activity_name: str
+    sport: str
     statistics: PosterStatistics
     poster: PosterFile

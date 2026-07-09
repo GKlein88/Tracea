@@ -11,6 +11,7 @@ class GPSPoint(BaseModel):
 
 class Activity(BaseModel):
     name: str
+    sport: str | None = None
     points: list[GPSPoint]
 
     distance_km: float | None = None

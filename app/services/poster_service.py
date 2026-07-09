@@ -5,9 +5,11 @@ from pathlib import Path
 from fastapi import UploadFile
 
 from app.gpx.parser import parse_gpx
+from app.geo.config import SPORT_CONFIGS
 from app.geo.clean import clean_track
 from app.geo.simplify import simplify_points
 from app.geo.projection import project_points
+from app.geo.elevation import smooth_elevation
 from app.svg.renderer import generate_svg
 from app.utils.files import create_output_filename
 from app.geo.statistics import (
@@ -35,12 +37,21 @@ async def generate_poster(file: UploadFile):
         # Parse GPX data
         activity = parse_gpx(temp_path)
 
-        track_name = activity.name
+        activity_name = activity.name
         raw_points = activity.points
+        sport = activity.sport
+        config = SPORT_CONFIGS[sport]
 
         # Remove only aberrant points
         cleaned_points = clean_track(
-            activity.points
+            raw_points, 
+            config,
+        )
+        
+        # Smoothen altitude
+        smoothed_points = smooth_elevation(
+            cleaned_points,
+            config,
         )
 
         # Compute statistics
@@ -49,7 +60,7 @@ async def generate_poster(file: UploadFile):
         )
 
         elevation_gain_m = calculate_elevation_gain(
-            cleaned_points
+            smoothed_points
         )
 
         # Simplify GPS track
@@ -59,7 +70,7 @@ async def generate_poster(file: UploadFile):
         svg_points = project_points(simplified_points)
 
         # Create output filename
-        output_file = create_output_filename(track_name)
+        output_file = create_output_filename(activity_name)
 
         # Generate SVG
         generate_svg(
@@ -69,7 +80,8 @@ async def generate_poster(file: UploadFile):
 
         return {
             "success": True,
-            "track_name": track_name,
+            "activity_name": activity_name,
+            "sport": sport,
             "statistics": {
                 "original_points": len(raw_points),
                 "cleaned_points": len(cleaned_points),

@@ -13,10 +13,14 @@ def parse_gpx(file_path: str):
     points = []
 
     track_name = None
+    track_type = None
 
     # Try to get the track name
     if gpx.tracks:
-        track_name = gpx.tracks[0].name
+        track = gpx.tracks[0]
+        track_name = track.name
+        if hasattr(track, "type") and track.type:
+            track_type = track.type.lower()
 
     # Fallback to metadata name
     if not track_name and gpx.name:
@@ -37,6 +41,7 @@ def parse_gpx(file_path: str):
 
     return Activity(
         name=track_name or "Untitled",
+        sport=track_type,
         points=[
             GPSPoint(**point)
             for point in points

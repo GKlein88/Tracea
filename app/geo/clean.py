@@ -1,21 +1,25 @@
 from app.geo.statistics import haversine_distance
 from app.models.activity import GPSPoint
+from app.geo.config import GeoConfig
 
-
-DEFAULT_MAX_SPEED_KMH = 150
-DEFAULT_MAX_JUMP_WITHOUT_TIME_KM = 2
 
 
 def _segment_is_aberrant(
     point1: GPSPoint,
     point2: GPSPoint,
-    max_speed_kmh: float,
-    max_jump_without_time_km: float
+    config: GeoConfig,
 ) -> bool:
     distance_km = haversine_distance(point1, point2)
+    
+    MIN_SEGMENT_DISTANCE_KM = config.min_segment_distance_km
+    MAX_JUMP_WITHOUT_TIME_KM = config.max_jump_without_time_km
+    MAX_SPEED_KMH = config.max_speed_kmh
+
+    if distance_km < MIN_SEGMENT_DISTANCE_KM:
+            return False
 
     if point1.time is None or point2.time is None:
-        return distance_km > max_jump_without_time_km
+        return distance_km > MAX_JUMP_WITHOUT_TIME_KM
 
     elapsed_hours = abs(
         (point2.time - point1.time).total_seconds()
@@ -24,13 +28,12 @@ def _segment_is_aberrant(
     if elapsed_hours == 0:
         return distance_km > 0
 
-    return distance_km / elapsed_hours > max_speed_kmh
+    return distance_km / elapsed_hours > MAX_SPEED_KMH
 
 
 def clean_track(
     points: list[GPSPoint],
-    max_speed_kmh: float = DEFAULT_MAX_SPEED_KMH,
-    max_jump_without_time_km: float = DEFAULT_MAX_JUMP_WITHOUT_TIME_KM
+    config: GeoConfig,
 ) -> list[GPSPoint]:
     """
     Remove isolated aberrant GPS points while preserving real track detail.
@@ -59,20 +62,17 @@ def clean_track(
         previous_segment_aberrant = _segment_is_aberrant(
             previous_point,
             point,
-            max_speed_kmh,
-            max_jump_without_time_km
+            config
         )
         next_segment_aberrant = _segment_is_aberrant(
             point,
             next_point,
-            max_speed_kmh,
-            max_jump_without_time_km
+            config
         )
         bypass_segment_aberrant = _segment_is_aberrant(
             previous_point,
             next_point,
-            max_speed_kmh,
-            max_jump_without_time_km
+            config
         )
 
         if (
@@ -89,8 +89,7 @@ def clean_track(
 
 def clean_points(
     points: list[GPSPoint],
-    max_speed_kmh: float = DEFAULT_MAX_SPEED_KMH,
-    max_jump_without_time_km: float = DEFAULT_MAX_JUMP_WITHOUT_TIME_KM
+    config: GeoConfig,
 ) -> list[GPSPoint]:
     """
     Backward-compatible name for GPS point cleaning.
@@ -98,6 +97,5 @@ def clean_points(
 
     return clean_track(
         points=points,
-        max_speed_kmh=max_speed_kmh,
-        max_jump_without_time_km=max_jump_without_time_km
+        config=config,
     )

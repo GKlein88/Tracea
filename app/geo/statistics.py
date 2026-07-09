@@ -43,38 +43,46 @@ def calculate_distance(
     if len(points) < 2:
         return 0.0
 
-    total = sum(
-        haversine_distance(points[i - 1], points[i])
-        for i in range(1, len(points))
-    )
+    total = 0.0
+
+    for i in range(1, len(points)):
+        segment = haversine_distance(
+            points[i - 1],
+            points[i],
+        )
+
+        total += segment
 
     return round(total, 2)
 
 
 def calculate_elevation_gain(
     points: list[GPSPoint],
-    threshold: float = 3.0,
 ) -> int:
     """
-    Calculate positive elevation gain.
-
-    Small altitude variations below the threshold are ignored to reduce
-    GPS noise.
+    Calculate total positive elevation gain.
+    Points are expected to have already been smoothed.
     """
 
     if len(points) < 2:
         return 0
 
     gain = 0.0
-    previous = points[0].ele or 0.0
+
+    previous = points[0].ele
+
+    if previous is None:
+        return 0
 
     for point in points[1:]:
-        current = point.ele or previous
-        delta = current - previous
+        if point.ele is None:
+            continue
 
-        if delta >= threshold:
+        delta = point.ele - previous
+
+        if delta > 0:
             gain += delta
 
-        previous = current
+        previous = point.ele
 
     return round(gain)
