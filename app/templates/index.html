@@ -1,0 +1,62 @@
+<form id="upload-form">
+
+    <input 
+        type="file" 
+        id="file"
+        accept=".gpx"
+        required
+    >
+
+    <button type="submit">
+        Créer mon poster
+    </button>
+
+</form>
+
+
+<div id="result"></div>
+
+
+<script>
+
+const form = document.getElementById("upload-form");
+
+form.addEventListener("submit", async (event) => {
+
+    event.preventDefault();
+
+    const file = document.getElementById("file").files[0];
+
+    const data = new FormData();
+    data.append("file", file);
+
+
+    const response = await fetch("/generate", {
+        method: "POST",
+        body: data
+    });
+
+
+    const result = await response.json();
+
+
+    const filename = result.poster.filename;
+
+
+    document.getElementById("result").innerHTML = `
+        <h2>${result.activity_name}</h2>
+
+        <p>
+        ${result.statistics.distance_km} km |
+        ${result.statistics.elevation_gain_m} m D+
+        </p>
+
+        <img 
+            src="/${filename}"
+            style="max-width:500px;"
+        >
+    `;
+
+});
+
+</script>
