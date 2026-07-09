@@ -40,21 +40,24 @@ form.addEventListener("submit", async (event) => {
     const result = await response.json();
 
 
-    const filename = result.poster.filename;
-
-
     document.getElementById("result").innerHTML = `
         <h2>${result.activity_name}</h2>
 
         <p>
-        ${result.statistics.distance_km} km |
-        ${result.statistics.elevation_gain_m} m D+
+            ${result.statistics.distance_km} km |
+            ${result.statistics.elevation_gain_m} m D+
         </p>
 
         <img 
-            src="/${filename}"
+            src="${result.svg_url}"
             style="max-width:500px;"
         >
+
+        <br><br>
+
+        <a href="${result.svg_url}" download>
+            Télécharger le poster
+        </a>
     `;
 
 });

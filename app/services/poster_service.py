@@ -37,7 +37,7 @@ async def generate_poster(file: UploadFile):
         # Parse GPX data
         activity = parse_gpx(temp_path)
 
-        activity_name = activity.name
+        activity_name = activity.name or Path(file.filename).stem
         raw_points = activity.points
         sport = activity.sport
         config = SPORT_CONFIGS[sport]
@@ -82,6 +82,7 @@ async def generate_poster(file: UploadFile):
             "success": True,
             "activity_name": activity_name,
             "sport": sport,
+            "svg_url": f"/outputs/{Path(output_file).name}",
             "statistics": {
                 "original_points": len(raw_points),
                 "cleaned_points": len(cleaned_points),
@@ -89,9 +90,6 @@ async def generate_poster(file: UploadFile):
                 "svg_points": len(svg_points),
                 "distance_km": distance_km,
                 "elevation_gain_m": elevation_gain_m,
-            },
-            "poster": {
-                "filename": output_file,
             },
         }
     finally:

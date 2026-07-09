@@ -18,5 +18,5 @@ class PosterResponse(BaseModel):
     success: bool
     activity_name: str
     sport: str
+    svg_url: str
     statistics: PosterStatistics
-    poster: PosterFile
