@@ -1,53 +1,65 @@
-// =====================================
-// GPX Upload & Poster Generation
-// =====================================
-
-// File input elements
 const fileInput = document.getElementById("gpx-upload");
 const fileName = document.getElementById("file-name");
 
-// Upload button
 const uploadButton = document.getElementById("upload-button");
+const expandButton = document.getElementById("expand-button");
+const closeButton = document.getElementById("close-button");
 
-// Activity information section
+const posterPreview = document.getElementById("poster-preview");
+const posterContent = document.getElementById("poster-content");
+const placeholderText = document.getElementById("placeholder-text");
+
 const activityInfo = document.getElementById("activity-info");
 
 
-// Open file explorer when clicking upload button
 uploadButton.addEventListener("click", () => {
     fileInput.click();
 });
 
+expandButton.addEventListener(
+    "click",
+    () => {
+        posterPreview.classList.add("focus-mode");
+    }
+);
 
-// Handle selected file
+closeButton.addEventListener(
+    "click",
+    () => {
+        posterPreview.classList.remove("focus-mode");
+    }
+);
+
+document.addEventListener(
+    "keydown",
+    (event) => {
+        if (event.key === "Escape") {
+            posterPreview.classList.remove("focus-mode");
+        }
+    }
+);
+
+
 fileInput.addEventListener("change", () => {
-
     const file = fileInput.files[0];
 
     if (!file) {
         return;
     }
 
-
-    // Only accept GPX files
     if (!file.name.toLowerCase().endsWith(".gpx")) {
-
         fileName.textContent = "Please select a GPX file.";
-
         fileInput.value = "";
-
         return;
     }
-
 
     fileName.textContent = file.name;
 
     generatePoster(file);
-
 });
 
 
-// Send GPX file to backend and generate poster
+
 async function generatePoster(file) {
 
     const formData = new FormData();
@@ -56,7 +68,6 @@ async function generatePoster(file) {
         "file",
         file
     );
-
 
     uploadButton.textContent = "Generating...";
 
@@ -69,31 +80,25 @@ async function generatePoster(file) {
         }
     );
 
-
     const data = await response.json();
 
 
     if (!data.success) {
-
         uploadButton.textContent = "Upload activity";
-
         return;
     }
 
 
     displayPoster(data);
 
-
     uploadButton.textContent = "Upload activity";
-
 }
 
 
-// Display generated SVG and activity data
+
 function displayPoster(data) {
 
-
-    // Insert generated SVG into poster container
+    // Display SVG
     posterContent.innerHTML = `
         <img
             src="${data.svg_url}"
@@ -101,14 +106,11 @@ function displayPoster(data) {
         >
     `;
 
-
-    // Insert activity information
+    // Display statistics
     activityInfo.innerHTML = `
-
         <h3>
             ${data.activity_name}
         </h3>
-
 
         <div class="activity-stats">
 
@@ -116,13 +118,11 @@ function displayPoster(data) {
                 ↗ ${data.statistics.distance_km.toFixed(1)} km
             </span>
 
-
             <span>
                 ▲ ${data.statistics.elevation_gain_m} m
             </span>
 
         </div>
-
 
         <p class="activity-note">
             * Distance and elevation gain are calculated from your GPX file

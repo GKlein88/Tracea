@@ -2,23 +2,23 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracéa — Premium Sport Wall Art</title>
 
-    <title>
-        Tracéa — Premium Sport Wall Art
-    </title>
-
-
-    <!-- Load fonts -->
+    <!-- Fonts -->
     <link rel="stylesheet" href="/static/css/fonts.css">
 
-
-    <!-- Load website styles -->
+    <!-- Styles -->
     <link rel="stylesheet" href="/static/css/style.css">
-
+    <link rel="stylesheet" href="/static/css/poster.css">
+    <link rel="stylesheet" href="/static/css/icons.css">
+    <link rel="stylesheet" href="/static/css/controls.css">
+    <link rel="stylesheet" href="/static/css/focus-mode.css">
 </head>
 
 
@@ -31,40 +31,27 @@
             Tracéa
         </div>
 
-
         <nav class="navigation">
-
-            <a href="#how-it-works">
-                How it works
-            </a>
-
-            <a href="#features">
-                Features
-            </a>
-
+            <a href="#how-it-works">How it works</a>
+            <a href="#features">Features</a>
         </nav>
 
     </header>
 
 
-
     <!-- Main content -->
     <main>
-
 
         <!-- Hero section -->
         <section class="hero">
 
-
-            <!-- Left content -->
+            <!-- Hero text -->
             <div class="hero-content">
-
 
                 <h1>
                     Turn your activities
                     into premium wall art.
                 </h1>
-
 
                 <p class="hero-description">
                     Transform your runs, hikes and rides
@@ -79,7 +66,6 @@
                     hidden
                 >
 
-
                 <button
                     class="primary-button"
                     type="button"
@@ -92,13 +78,13 @@
                 <p
                     id="file-name"
                     class="file-name"
-                >
-                </p>
+                ></p>
 
 
                 <span class="hero-note">
                     Your route · Your story · Your artwork
                 </span>
+
 
                 <div class="hero-benefits">
 
@@ -107,12 +93,10 @@
                         SVG vector quality
                     </div>
 
-
                     <div class="benefit-item">
                         <span class="benefit-icon">•</span>
                         Print ready artwork
                     </div>
-
 
                     <div class="benefit-item">
                         <span class="benefit-icon">•</span>
@@ -121,20 +105,18 @@
 
                 </div>
 
-
             </div>
 
 
-
-            <!-- Right visual -->
+            <!-- Poster preview -->
             <div class="hero-visual">
 
-
                 <div
-                    class="poster-placeholder"
+                    class="poster-viewer"
                     id="poster-preview"
                 >
 
+                    <!-- Poster controls -->
                     <div class="poster-controls">
 
                         <div class="template-controls">
@@ -157,13 +139,23 @@
                             </button>
 
                         </div>
-                            
+
+
                         <button
                             class="poster-button maximize-button"
-                            id="expand-button"
+                            id="maximize-button"
                             type="button"
                         >
                             <span class="icon maximize-icon"></span>
+                        </button>
+
+
+                        <button
+                            class="poster-button close-button"
+                            id="close-button"
+                            type="button"
+                        >
+                            <span class="icon close-icon"></span>
                         </button>
 
 
@@ -175,9 +167,36 @@
                             <span class="icon edit-icon"></span>
                         </button>
 
+
+                        <button
+                            class="poster-button zoom-in-button"
+                            id="zoom-in-button"
+                            type="button"
+                        >
+                            <span class="icon zoom-in-icon"></span>
+                        </button>
+
+
+                        <button
+                            class="poster-button zoom-out-button"
+                            id="zoom-out-button"
+                            type="button"
+                        >
+                            <span class="icon zoom-out-icon"></span>
+                        </button>
+
+                        <button
+                            class="poster-button reset-button"
+                            id="reset-zoom-button"
+                            type="button"
+                        >
+                            <span class="icon reset-icon"></span>
+                        </button>
+
                     </div>
 
 
+                    <!-- Poster content -->
                     <div
                         class="poster-content"
                         id="poster-content"
@@ -185,7 +204,7 @@
 
                         <div
                             class="poster-empty-state"
-                            id="placeholder-text"
+                            id="empty-state"
                         >
                             Your route<br>
                             becomes art.
@@ -199,9 +218,7 @@
                 <div
                     class="activity-info"
                     id="activity-info"
-                >
-                </div>
-
+                ></div>
 
             </div>
 
@@ -212,17 +229,14 @@
 
     <!-- Footer -->
     <footer class="footer">
-
-        <p>
-            © 2026 Tracéa
-        </p>
-
+        <p>© 2026 Tracéa</p>
     </footer>
 
-    <script src="/static/js/upload.js"></script>
 
+    <!-- Scripts -->
+    <script src="/static/js/upload.js"></script>
+    <script src="/static/js/poster-viewer.js"></script>
 
 </body>
-
 
 </html>

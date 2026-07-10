@@ -20,8 +20,8 @@ def create_path(points):
 def generate_svg(
     points,
     output_file,
-    width=800,
-    height=800
+    width=1200,
+    height=1600
 ):
     """
     Generate an SVG file containing the GPS track.

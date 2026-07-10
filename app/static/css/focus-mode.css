@@ -1,0 +1,116 @@
+.poster-viewer.focus-mode {
+    position:fixed;
+    top:30px;
+    left:30px;
+    right:30px;
+    bottom:30px;
+    width:calc(100vw - 60px);
+    height:calc(100vh - 60px);
+    padding:40px;
+    z-index:1000;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:rgba(0,0,0,0.75);
+    backdrop-filter:blur(12px);
+    overflow:hidden;
+    border-radius:24px;
+}
+
+
+
+.poster-viewer.focus-mode .poster-content {
+    height:calc(100% - 80px);
+    max-height:800px;
+    aspect-ratio:3 / 4;
+    width:auto;
+    max-width:calc(100% - 20px);
+    flex-shrink:0;
+    border-radius:8px;
+    overflow:hidden;
+    position: relative;
+    z-index: 1;
+}
+
+
+
+.poster-viewer.focus-mode .poster-content img {
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+
+
+/* Focus buttons */
+
+.focus-mode {
+    cursor:grab;
+}
+
+.focus-mode.dragging {
+    cursor:grabbing;
+    transition: none;
+}
+
+.focus-mode .maximize-button {
+    display:none;
+}
+
+.focus-mode .close-button {
+    display:flex;
+    position:absolute;
+    top:10px;
+    right:10px;
+}
+
+.focus-mode .template-controls {
+    position:absolute;
+    top:50%;
+    left:10px;
+    right:10px;
+    transform:translateY(-50%);
+    display:flex;
+    justify-content:space-between;
+}
+
+.focus-mode .edit-button {
+    position:absolute;
+    bottom:10px;
+    right:10px;
+}
+
+
+.focus-mode .zoom-in-button {
+    display:flex;
+    position:absolute;
+    left: 50px;
+    top:10px;
+}
+
+.focus-mode .zoom-out-button {
+    display:flex;
+    position:absolute;
+    left:10px;
+    top:10px;
+}
+
+.focus-mode .reset-button {
+    display:flex;
+    position:absolute;
+    left:90px;
+    top:10px;
+}
+
+
+/* Zoom */
+.poster-viewer.focus-mode .poster-content {
+    transform-origin:center center;
+    transition:transform .15s ease;
+    cursor:grab;
+}
+
+.poster-viewer.focus-mode.dragging .poster-content {
+    transition:none;
+    cursor: grabbing;
+}
