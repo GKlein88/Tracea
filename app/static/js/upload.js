@@ -1,9 +1,13 @@
-const uploadButton = document.getElementById("upload-button");
 const fileInput = document.getElementById("gpx-upload");
 const fileName = document.getElementById("file-name");
 
+const uploadButton = document.getElementById("upload-button");
+const expandButton = document.getElementById("expand-button");
+
 const posterPreview = document.getElementById("poster-preview");
+const posterContent = document.getElementById("poster-content");
 const placeholderText = document.getElementById("placeholder-text");
+
 const activityInfo = document.getElementById("activity-info");
 
 
@@ -95,21 +99,14 @@ async function generatePoster(file) {
 
 function displayPoster(data) {
 
-
-    // Remove placeholder
-
-    placeholderText.style.display = "none";
-
-
     // Display SVG
 
-    posterPreview.innerHTML = `
+    posterContent.innerHTML = `
         <img
             src="${data.svg_url}"
             alt="Generated route poster"
         >
     `;
-
 
 
     // Display statistics
