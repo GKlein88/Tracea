@@ -34,8 +34,8 @@ def parse_gpx(file_path: str):
                     {
                         "lat": point.latitude,
                         "lon": point.longitude,
-                        "ele": point.elevation,
-                        "time": point.time
+                        "elevation": point.elevation,
+                        "timestamp": point.time
                     }
                 )
 

@@ -9,10 +9,14 @@ def create_path(points):
     if not points:
         return ""
 
-    path = f"M {points[0]['x']} {points[0]['y']} "
+    path = (
+        f"M {points[0]['x']} {points[0]['y']} "
+    )
 
     for point in points[1:]:
-        path += f"L {point['x']} {point['y']} "
+        path += (
+            f"L {point['x']} {point['y']} "
+        )
 
     return path.strip()
 
@@ -20,11 +24,14 @@ def create_path(points):
 def generate_svg(
     points,
     output_file,
-    width=1200,
-    height=1600
+    width,
+    height,
+    background,
+    route_color,
+    stroke_width
 ):
     """
-    Generate an SVG file containing the GPS track.
+    Generate an SVG poster containing the GPS track.est-ce q
     """
 
     dwg = svgwrite.Drawing(
@@ -32,16 +39,17 @@ def generate_svg(
         size=(width, height)
     )
 
-    # Add background
+    # Background
     dwg.add(
         dwg.rect(
             insert=(0, 0),
             size=(width, height),
-            fill="white"
+            fill=background
         )
     )
 
-    # Create GPS track path
+
+    # GPS track
     path_data = create_path(points)
 
     if path_data:
@@ -49,9 +57,12 @@ def generate_svg(
             dwg.path(
                 d=path_data,
                 fill="none",
-                stroke="black",
-                stroke_width=4
+                stroke=route_color,
+                stroke_width=stroke_width,
+                stroke_linecap="round",
+                stroke_linejoin="round"
             )
         )
+
 
     dwg.save()

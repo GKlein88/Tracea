@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="/static/css/main.css">
 </head>
 
+
+<body>
+
 <div class="download-modal" id="download-modal">
 
     <div class="download-modal-content">
@@ -25,37 +28,21 @@
             ×
         </button>
 
-        <h3>
-            Download poster
-        </h3>
+        <h3>Download poster</h3>
 
-        <label>
-            File name
-        </label>
+        <label>File name</label>
 
         <input
             id="download-name"
             type="text"
         >
 
-        <label>
-            Format
-        </label>
+        <label>Format</label>
 
         <select id="download-format">
-
-            <option value="svg">
-                SVG
-            </option>
-
-            <option value="png">
-                PNG
-            </option>
-
-            <option value="jpg">
-                JPG
-            </option>
-
+            <option value="svg">SVG</option>
+            <option value="png">PNG</option>
+            <option value="jpg">JPG</option>
         </select>
 
 
@@ -70,8 +57,6 @@
     </div>
 
 </div>
-
-<body>
 
     <!-- Header -->
     <header class="header">
@@ -97,10 +82,7 @@
             <!-- Hero text (left side of the page) -->
             <div class="hero-content">
 
-                <h1>
-                    Turn your activities
-                    into premium wall art.
-                </h1>
+                <h1>Turn your activities into premium wall art.</h1>
 
                 <!-- Hero  description -->
                 <p class="hero-description"> 
@@ -161,10 +143,108 @@
             <!-- Poster preview -->
             <div class="hero-visual">
 
-                <div
-                    class="poster-viewer"
-                    id="poster-preview"
-                >
+                <div class="editor-layout" id="editor-layout">
+
+                    <div class="editor-panel" id="editor-panel">
+
+                        <h3>Customize poster</h3>
+
+                        <!-- Template -->
+                        <label>Template</label>
+                        <div id="template-list">
+
+                        </div>
+
+
+                        <!-- Title -->
+                        <label>Title</label>
+                        <input
+                            id="editor-title"
+                            type="text"
+                        >
+
+                        <!-- Distance -->
+                        <div class="editor-stat">
+                            <label>
+                                <input
+                                    id="show-distance"
+                                    type="checkbox"
+                                    checked
+                                >
+                                Distance
+                            </label>
+
+                            <input
+                                id="editor-distance"
+                                type="text"
+                            >
+                        </div>
+
+                        <!-- Elevation -->
+                        <div class="editor-stat">
+                            <label>
+                                <input
+                                    id="show-elevation"
+                                    type="checkbox"
+                                    checked
+                                >
+                                Elevation
+                            </label>
+
+                            <input
+                                id="editor-elevation"
+                                type="text"
+                            >
+                        </div>
+
+                        <!-- Duration -->
+                        <div class="editor-stat">
+                            <label>
+                                <input
+                                    id="show-duration"
+                                    type="checkbox"
+                                    checked
+                                >
+                                Duration
+                            </label>
+                            <input
+                                id="editor-duration"
+                                type="text"
+                            >
+
+                            <select
+                                id="duration-format"
+                            >
+                                <option value="hms">
+                                    01h42m35s
+                                </option>
+                                <option value="clock">
+                                    01:42:35
+                                </option>
+                                <option value="prime">
+                                    01h42'35"
+                                </option>
+                                <option value="short">
+                                    01h42
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="editor-footer" id="editor-footer">
+                            <button
+                                id="apply-editor"
+                                class="primary-button"
+                                type="button"
+                            >
+                                Apply
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="poster-viewer" id="poster-preview">
 
                     <!-- Poster controls -->
                     <div class="poster-controls">
@@ -280,7 +360,6 @@
 
                 </div>
 
-
                 <div
                     class="activity-info"
                     id="activity-info"
@@ -300,8 +379,12 @@
 
 
     <!-- Scripts -->
-    <script src="/static/js/upload.js"></script>
-    <script src="/static/js/poster-viewer.js"></script>
+    <!-- Scripts -->
+    <script type="module" src="/static/js/app-state.js"></script>
+    <script type="module" src="/static/js/formatter.js"></script>
+    <script type="module" src="/static/js/upload.js"></script>
+    <script type="module" src="/static/js/poster-viewer.js"></script>
+    <script type="module" src="/static/js/editor.js"></script>
 
 </body>
 

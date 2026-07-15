@@ -19,8 +19,7 @@
 
 .poster-viewer.focus-mode .poster-content {
     aspect-ratio:3 / 4;
-    height:calc(100% - 80px);
-    max-height:800px;
+    height:calc(100% - 20px);
     width:auto;
     max-width:calc(100% - 20px);
     flex-shrink:0;
@@ -126,4 +125,30 @@
     left:auto;
     bottom:auto;
     transform: translateY(-50%);
+}
+
+
+/* Editor */
+.editor-layout .poster-viewer.focus-mode {
+    position:relative;
+    top:auto;
+    left:auto;
+    right:auto;
+    bottom:auto;
+    width:auto;
+    height:100%;
+    padding:40px;
+    border-radius:0;
+}
+
+.poster-viewer.focus-mode.editor-open {  
+    margin-left:320px;  
+    width:calc(100vw - 380px);
+    border-radius:0 24px 24px 0;
+}
+
+
+/* Hide customize button while editor is open */
+.poster-viewer.editor-open .edit-button {
+    display:none;
 }

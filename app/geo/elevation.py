@@ -18,9 +18,9 @@ def smooth_elevation(
         end = min(len(points), i + window + 1)
 
         values = [
-            p.ele
+            p.elevation
             for p in points[start:end]
-            if p.ele is not None
+            if p.elevation is not None
         ]
 
         if values:

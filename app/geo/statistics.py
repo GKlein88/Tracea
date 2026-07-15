@@ -1,4 +1,5 @@
 from math import atan2, cos, radians, sin, sqrt
+from datetime import timedelta
 
 from app.models.activity import GPSPoint
 
@@ -86,3 +87,27 @@ def calculate_elevation_gain(
         previous = point.ele
 
     return round(gain)
+
+
+def calculate_duration(
+    points: list[GPSPoint]
+) -> int:
+    """
+    Calculate activity duration in seconds.
+    """
+
+    timestamps = [
+        point.timestamp
+        for point in points
+        if point.timestamp
+    ]
+
+    if len(timestamps) < 2:
+        return 0
+
+    duration = (
+        max(timestamps)
+        - min(timestamps)
+    )
+
+    return int(duration.total_seconds())

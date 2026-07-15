@@ -1,14 +1,33 @@
 from pydantic import BaseModel
 
-from app.models.activity import GPSPoint
+
+class RouteArea(BaseModel):
+    width: int
+    height: int
+    offset_x: int = 0
+    offset_y: int = 0
+    padding: int = 50
 
 
-class PosterStats(BaseModel):
-    distance_km: float
-    elevation_gain_m: float
+class PosterStyle(BaseModel):
+    background: str
+    route_color: str
+    stroke_width: int
 
 
-class Poster(BaseModel):
-    title: str
-    stats: PosterStats
-    track: list[GPSPoint]
+class StatsConfig(BaseModel):
+    show_distance: bool = True
+    show_elevation: bool = True
+    show_duration: bool = True
+
+    duration_format: str = "hms"
+
+
+class PosterTemplate(BaseModel):
+    name: str
+    width: int
+    height: int
+
+    route_area: RouteArea
+    style: PosterStyle
+    stats: StatsConfig

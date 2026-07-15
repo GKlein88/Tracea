@@ -5,8 +5,8 @@ from datetime import datetime
 class GPSPoint(BaseModel):
     lat: float
     lon: float
-    ele: float | None = None
-    time: datetime | None = None
+    elevation: float | None = None
+    timestamp: datetime | None = None
 
 
 class Activity(BaseModel):

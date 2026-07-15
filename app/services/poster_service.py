@@ -15,7 +15,11 @@ from app.utils.files import create_output_filename
 from app.geo.statistics import (
     calculate_distance,
     calculate_elevation_gain,
+    calculate_duration,
 )
+from app.services.template_service import load_template
+
+template = load_template("minimal")
 
 
 async def generate_poster(file: UploadFile):
@@ -62,12 +66,19 @@ async def generate_poster(file: UploadFile):
         elevation_gain_m = calculate_elevation_gain(
             smoothed_points
         )
+        
+        duration_seconds = calculate_duration(
+            cleaned_points
+        )
 
         # Simplify GPS track
         simplified_points = simplify_points(cleaned_points)
 
         # Convert GPS coordinates to SVG coordinates
-        svg_points = project_points(simplified_points)
+        svg_points = project_points(
+            simplified_points,
+            template.route_area
+        )
 
         # Create output filename
         output_file = create_output_filename(activity_name)
@@ -75,11 +86,16 @@ async def generate_poster(file: UploadFile):
         # Generate SVG
         generate_svg(
             points=svg_points,
-            output_file=output_file
+            output_file=output_file,
+            width=template.width,
+            height=template.height,
+            background=template.style.background,
+            route_color=template.style.route_color,
+            stroke_width=template.style.stroke_width
         )
 
         return {
-            "success": True,
+            "success": True,    
             "activity_name": activity_name,
             "sport": sport,
             "svg_url": f"/outputs/{Path(output_file).name}",
@@ -90,6 +106,7 @@ async def generate_poster(file: UploadFile):
                 "svg_points": len(svg_points),
                 "distance_km": distance_km,
                 "elevation_gain_m": elevation_gain_m,
+                "duration_seconds": duration_seconds,
             },
         }
     finally:

@@ -1,32 +1,31 @@
 // =====================================
-// Poster Viewer Interactions
+// Poster Viewer
+// Focus / Zoom / Pan / Download
 // =====================================
 
-// Poster elements
+import { appState } from "./app-state.js";
+
+// Elements
 const posterPreview = document.getElementById("poster-preview");
 const posterContent = document.getElementById("poster-content");
 
-// Viewer buttons
+const editorLayout = document.getElementById("editor-layout");
+
+// Buttons
 const maximizeButton = document.getElementById("maximize-button");
 const closeButton = document.getElementById("close-button");
 const zoomInButton = document.getElementById("zoom-in-button");
 const zoomOutButton = document.getElementById("zoom-out-button");
-const resetZoomButton = document.getElementById("reset-zoom-button");
+const resetZoomButton = document.getElementById("reset-zoom-button" );
 
-// Download features
+// Download
 const downloadButton = document.getElementById("download-button");
 const downloadModal = document.getElementById("download-modal");
 const downloadClose = document.getElementById("download-close");
-const confirmDownload = document.getElementById("confirm-download");
+const confirmDownload = document.getElementById( "confirm-download");
 const downloadName = document.getElementById("download-name");
-const downloadFormat = document.getElementById("download-format");
 
 
-let currentActivityName = "";
-let currentPosterUrl = "";
-
-
-// Viewer state
 let zoomLevel = 1;
 
 let offsetX = 0;
@@ -38,8 +37,13 @@ let startX = 0;
 let startY = 0;
 
 
-// Apply zoom and pan transform
+
+// =====================================
+// Transform
+// =====================================
+
 function updatePosterTransform() {
+
     posterContent.style.transform =
         `
         translate(${offsetX}px, ${offsetY}px)
@@ -47,164 +51,135 @@ function updatePosterTransform() {
         `;
 }
 
-// Reset poster zoom
 function resetPosterZoom() {
+
     zoomLevel = 1;
+
     offsetX = 0;
     offsetY = 0;
+
     posterContent.style.transform = "";
 }
 
-// Reset zoom in focus mode
-function resetZoom() {
-    zoomLevel = 1;
-    offsetX = 0;
-    offsetY = 0;
-    updatePosterTransform();
-}
 
-// Limit poster drag in focus mode
+window.resetPosterZoom = resetPosterZoom;
+
 function limitPan() {
-    const maxMove =
-        350 * zoomLevel;
-        
-    offsetX = Math.max(
-        Math.min(offsetX, maxMove),
-        -maxMove
-    );
 
-    offsetY = Math.max(
-        Math.min(offsetY, maxMove),
-        -maxMove
-    );
+    const maxMove = 450 * zoomLevel;
+
+    offsetX = Math.max( Math.min(offsetX,maxMove), -maxMove );
+    offsetY = Math.max( Math.min(offsetY,maxMove), -maxMove );
 }
 
 
-// Enter focus mode
-maximizeButton.addEventListener("click", () => {
+
+// =====================================
+// Focus mode
+// =====================================
+
+function openFocusMode(){
+
     resetPosterZoom();
+
     posterPreview.classList.add("focus-mode");
-});
+}
 
+function closeFocusMode(){
 
-// Exit focus mode
-closeButton.addEventListener("click", () => {
-    posterPreview.classList.remove("focus-mode");
+    posterPreview.classList.remove(
+        "focus-mode",
+        "editor-open"
+    );
+
+    editorLayout.classList.remove("active");
+
     resetPosterZoom();
-});
+}
+
+window.openFocusMode = openFocusMode;
+
+window.closeFocusMode =  closeFocusMode;
+
+maximizeButton.addEventListener( "click", openFocusMode);
+
+closeButton.addEventListener( "click", () => {
+        closeFocusMode();
+        if(window.closeEditor){
+            window.closeEditor();
+        }
+    }
+);
+
+document.addEventListener("keydown", event => {
+        if(
+            event.key === "Escape" &&
+            posterPreview.classList.contains(
+                "focus-mode"
+            )
+        ){
+            closeFocusMode();
+            if(window.closeEditor){
+                window.closeEditor();
+            }
+        }
+    }
+);
 
 
-// Download poster
-downloadButton.addEventListener("click",() => {
-        if (!currentPosterUrl) {
-            alert(
-                "No activity loaded."
-            );
-            return;
+
+// =====================================
+// Zoom buttons
+// =====================================
+
+zoomInButton.addEventListener("click", ()=>{
+        zoomLevel = Math.min( zoomLevel + .25, 3 );
+        updatePosterTransform();
+    }
+);
+
+zoomOutButton.addEventListener("click", ()=>{
+        zoomLevel = Math.max( zoomLevel - .25, 1 );
+        if(zoomLevel === 1){
+            offsetX = 0;
+            offsetY = 0;
         }
 
-        downloadName.value = currentActivityName;
-
-        downloadModal.classList.add(
-            "active"
-        );
-
+        updatePosterTransform();
     }
 );
 
-downloadClose.addEventListener("click", () => {
-        downloadModal.classList.remove(
-            "active"
-        );
-    }
-);
-
-confirmDownload.addEventListener("click", async () => {
-        const name = downloadName.value || "tracea-poster";
-        const format = downloadFormat.value;
-
-        if (format !== "svg") {
-            alert(
-                "PNG and JPG export coming soon."
-            );
-            return;
-        }
-
-        const link = document.createElement("a");
-
-        link.href = currentPosterUrl;
-        link.download = `${name}.svg`;
-        link.click();
-
-        downloadModal.classList.remove(
-            "active"
-        );
-    }
-);
+resetZoomButton.addEventListener("click",  resetPosterZoom);
 
 
-// Exit focus mode with Escape key
-document.addEventListener("keydown", (event) => {
-    if (
-        event.key === "Escape" &&
-        posterPreview.classList.contains("focus-mode")
-    ) {
-        posterPreview.classList.remove("focus-mode");
-        resetPosterZoom();
-    }
-});
 
+// =====================================
+// Wheel zoom
+// =====================================
 
-// Zoom in
-zoomInButton.addEventListener("click", () => {
-    zoomLevel = Math.min(zoomLevel + 0.25, 3);
-    updatePosterTransform();
-});
-
-
-// Zoom out
-zoomOutButton.addEventListener("click", () => {
-    zoomLevel = Math.max(zoomLevel - 0.25, 1);
-
-    if (zoomLevel === 1) {
-        offsetX = 0;
-        offsetY = 0;
-    }
-
-    updatePosterTransform();
-});
-
-
-// Zoom poster with mouse wheel in focus mode
-posterPreview.addEventListener("wheel", (event) => {
-
-        // Disable zoom outside focus mode
-        if (!posterPreview.classList.contains("focus-mode")) {
+posterPreview.addEventListener("wheel", event =>{
+        if(
+            !posterPreview.classList.contains(
+                "focus-mode"
+            )
+        ){
             return;
         }
 
         event.preventDefault();
 
-        // Scroll up = zoom in
-        if (event.deltaY < 0) {
-            zoomLevel = Math.min(
-                zoomLevel + 0.25,
-                3
-            );
-        } 
-        // Scroll down = zoom out
-        else {
-            zoomLevel = Math.max(
-                zoomLevel - 0.25,
-                1
-            );
+        if(event.deltaY < 0){
+            zoomLevel = Math.min( zoomLevel + .25, 3 );
+        }
+        else{
+            zoomLevel = Math.max( zoomLevel - .25, 1 );
 
-            // Reset position when returning to original scale
-            if (zoomLevel === 1) {
+            if(zoomLevel === 1){
                 offsetX = 0;
                 offsetY = 0;
             }
         }
+
         updatePosterTransform();
     },
     {
@@ -213,34 +188,27 @@ posterPreview.addEventListener("wheel", (event) => {
 );
 
 
-// Reset zoom on click
-if (resetZoomButton) {
-    resetZoomButton.addEventListener("click", () => {
-            resetZoom();
-        }
-    );
-}
 
+// =====================================
+// Drag
+// =====================================
 
-// Start moving poster when clicking and dragging
-posterPreview.addEventListener("mousedown", (event) => {
-        // Pan only works in focus mode and when zoomed
-        if (
-            event.button !== 0
-            ||
-            !posterPreview.classList.contains("focus-mode")
-            ||
+posterPreview.addEventListener("mousedown", event =>{
+        if(
+            event.button !== 0 ||
+            !posterPreview.classList.contains(
+                "focus-mode"
+            ) ||
             zoomLevel <= 1
-        ) {
+        ){
             return;
         }
 
         event.preventDefault();
+
         isDragging = true;
 
-        posterPreview.classList.add(
-            "dragging"
-        );
+        posterPreview.classList.add("dragging");
 
         startX = event.clientX - offsetX;
         startY = event.clientY - offsetY;
@@ -248,10 +216,8 @@ posterPreview.addEventListener("mousedown", (event) => {
 );
 
 
-// Move poster while dragging
-document.addEventListener("mousemove", (event) => {
-
-        if (!isDragging) {
+document.addEventListener( "mousemove", event=>{
+        if(!isDragging){
             return;
         }
 
@@ -265,18 +231,49 @@ document.addEventListener("mousemove", (event) => {
 );
 
 
+document.addEventListener( "mouseup", ()=>{
+        isDragging = false;
 
-// Stop moving poster after releasing mouse button
-document.addEventListener("mouseup", () => {
+        posterPreview.classList.remove("dragging");
+    }
+);
 
-        if (!isDragging) {
+
+
+// =====================================
+// Download
+// =====================================
+
+downloadButton.addEventListener("click", ()=>{
+        if(!appState.posterUrl){
+            alert(
+                "No activity loaded."
+            );
             return;
         }
 
-        isDragging = false;
+        downloadName.value = appState.activityName;
 
-        posterPreview.classList.remove(
-            "dragging"
-        );
+        downloadModal.classList.add("active");
+    }
+);
+
+
+downloadClose.addEventListener("click", ()=>{
+        downloadModal.classList.remove("active");
+    }
+);
+
+
+confirmDownload.addEventListener("click", ()=>{       
+
+        const link = document.createElement("a");
+
+        link.href = appState.posterUrl;
+        link.download = `${downloadName.value}.svg`;
+
+        link.click();
+
+        downloadModal.classList.remove("active");
     }
 );

@@ -2,70 +2,83 @@
 // GPX Upload & Poster Generation
 // =====================================
 
-// File input elements
+
+import { appState } from "./app-state.js";
+import { formatDuration } from "./formatter.js";
+
+
+// File input
 const fileInput = document.getElementById("gpx-upload");
 const fileName = document.getElementById("file-name");
 
 // Upload button
 const uploadButton = document.getElementById("upload-button");
 
-// Activity information section
+// Poster elements
+const posterContent = document.getElementById("poster-content");
 const activityInfo = document.getElementById("activity-info");
 
-
-// Open file explorer when clicking upload button
+// Open explorer
 uploadButton.addEventListener("click", () => {
-    fileInput.click();
-});
+        fileInput.click();
+    }
+);
 
 
-// Handle selected file
+// File selected
 fileInput.addEventListener("change", () => {
 
-    const file = fileInput.files[0];
+        const file =
+            fileInput.files[0];
 
-    if (!file) {
-        return;
+        if (!file) {
+            return;
+        }
+
+        if (
+            !file.name
+                .toLowerCase()
+                .endsWith(".gpx")
+        ) {
+            fileName.textContent = "Please select a GPX file.";
+            fileInput.value = "";
+            return;
+        }
+
+        fileName.textContent = file.name;
+
+        generatePoster(file);
     }
-
-    // Only accept GPX files
-    if (!file.name.toLowerCase().endsWith(".gpx")) {
-        fileName.textContent = "Please select a GPX file.";
-        fileInput.value = "";
-        return;
-    }
-
-    fileName.textContent = file.name;
-
-    generatePoster(file);
-
-});
+);
 
 
-// Send GPX file to backend and generate poster
+// Generate poster
+
 async function generatePoster(file) {
 
-    const formData = new FormData();
+    const formData =
+        new FormData();
 
-    formData.append(
-        "file",
-        file
-    );
+    formData.append("file", file);
 
-    uploadButton.textContent = "Generating Preview...";
+    uploadButton.textContent = "Generating ...";
 
-    const response = await fetch(
-        "/generate",
-        {
-            method: "POST",
-            body: formData
-        }
-    );
+    showGeneratingState();
+
+    const response =
+        await fetch(
+            "/generate",
+            {
+                method:"POST",
+                body:formData
+            }
+        );
 
     const data = await response.json();
 
     if (!data.success) {
-        uploadButton.textContent = "Upload activity";
+        uploadButton.textContent =
+            "Upload activity";
         return;
     }
 
@@ -75,13 +88,18 @@ async function generatePoster(file) {
 }
 
 
-// Display generated SVG and activity data
+// Display poster
 function displayPoster(data) {
 
-    currentActivityName = data.activity_name;
-    currentPosterUrl = data.svg_url;
+    appState.activityName = data.activity_name;
+    appState.posterUrl = data.svg_url;
 
-    // Insert generated SVG into poster container
+    appState.statistics = {
+        distance: `${data.statistics.distance_km.toFixed(1)} km`,
+        elevation: `${data.statistics.elevation_gain_m} m`,
+        duration:  data.statistics.duration_seconds ?? 0
+    };
+
     posterContent.innerHTML = `
         <img
             src="${data.svg_url}"
@@ -89,29 +107,53 @@ function displayPoster(data) {
         >
     `;
 
-    // Insert activity information
     activityInfo.innerHTML = `
-
-        <h3>
-            ${data.activity_name}
-        </h3>
-
+        <h3> ${data.activity_name} </h3>
 
         <div class="activity-stats">
             <span>
-                ↗ ${data.statistics.distance_km.toFixed(1)} km
+                ↗ ${appState.statistics.distance}
             </span>
-
 
             <span>
-                ▲ ${data.statistics.elevation_gain_m} m
+                ▲ ${appState.statistics.elevation}
             </span>
-        </div>
 
+            <span>
+                ⏱ ${formatDuration(
+                    appState.statistics.duration,
+                    "clock"
+                )}
+</span>
+        </div>
 
         <p class="activity-note">
             * Distance and elevation gain are calculated from your GPX file
         </p>
-
     `;
+}
+
+// Loading state
+
+function showGeneratingState() {
+
+    appState.posterUrl = "";
+    appState.activityName = "";
+
+    posterContent.innerHTML = `
+        <div class="poster-empty-state loading">
+            <span>.</span>
+            <span>.</span>
+            <span>.</span>
+        </div>
+    `;
+
+    activityInfo.innerHTML = "";
+
+    // Reset viewer if available
+    if (
+        window.resetPosterZoom
+    ) {
+        window.resetPosterZoom();
+    }
 }

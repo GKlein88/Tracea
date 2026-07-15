@@ -18,11 +18,11 @@ def _segment_is_aberrant(
     if distance_km < MIN_SEGMENT_DISTANCE_KM:
             return False
 
-    if point1.time is None or point2.time is None:
+    if point1.timestamp is None or point2.timestamp is None:
         return distance_km > MAX_JUMP_WITHOUT_TIME_KM
 
     elapsed_hours = abs(
-        (point2.time - point1.time).total_seconds()
+        (point2.timestamp - point1.timestamp).total_seconds()
     ) / 3600
 
     if elapsed_hours == 0:

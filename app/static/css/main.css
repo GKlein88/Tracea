@@ -2,7 +2,6 @@
 @import url("fonts.css");
 @import url("icons.css");
 
-
 @import url("base.css");
 @import url("responsive.css");
 
@@ -17,6 +16,7 @@
 @import url("components/controls.css");
 @import url("components/activity-info.css");
 @import url("components/modal.css");
+@import url("components/editor.css");
 
 
 @import url("modes/focus-mode.css");
