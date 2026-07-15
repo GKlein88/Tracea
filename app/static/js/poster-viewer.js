@@ -25,6 +25,7 @@ let isDragging = false;
 let startX = 0;
 let startY = 0;
 
+
 // Apply zoom and pan transform
 function updatePosterTransform() {
     posterContent.style.transform =

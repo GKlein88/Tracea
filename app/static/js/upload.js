@@ -28,17 +28,12 @@ fileInput.addEventListener("change", () => {
         return;
     }
 
-
     // Only accept GPX files
     if (!file.name.toLowerCase().endsWith(".gpx")) {
-
         fileName.textContent = "Please select a GPX file.";
-
         fileInput.value = "";
-
         return;
     }
-
 
     fileName.textContent = file.name;
 
@@ -57,9 +52,7 @@ async function generatePoster(file) {
         file
     );
 
-
-    uploadButton.textContent = "Generating...";
-
+    uploadButton.textContent = "Generating Preview...";
 
     const response = await fetch(
         "/generate",
@@ -69,29 +62,21 @@ async function generatePoster(file) {
         }
     );
 
-
     const data = await response.json();
 
-
     if (!data.success) {
-
         uploadButton.textContent = "Upload activity";
-
         return;
     }
 
-
     displayPoster(data);
 
-
     uploadButton.textContent = "Upload activity";
-
 }
 
 
 // Display generated SVG and activity data
 function displayPoster(data) {
-
 
     // Insert generated SVG into poster container
     posterContent.innerHTML = `
@@ -100,7 +85,6 @@ function displayPoster(data) {
             alt="Generated route poster"
         >
     `;
-
 
     // Insert activity information
     activityInfo.innerHTML = `
@@ -111,7 +95,6 @@ function displayPoster(data) {
 
 
         <div class="activity-stats">
-
             <span>
                 ↗ ${data.statistics.distance_km.toFixed(1)} km
             </span>
@@ -120,7 +103,6 @@ function displayPoster(data) {
             <span>
                 ▲ ${data.statistics.elevation_gain_m} m
             </span>
-
         </div>
 
 

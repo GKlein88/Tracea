@@ -1,0 +1,27 @@
+.header {
+    max-width: 1200px;
+    margin: auto;
+    padding: 32px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.logo {
+    font-family: "FuturaPT", sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+}
+
+
+.navigation {
+    display: flex;
+    gap: 32px;
+}
+
+
+.navigation a {
+    color: var(--text-secondary);
+    font-size: 15px;
+}

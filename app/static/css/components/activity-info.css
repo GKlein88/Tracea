@@ -1,0 +1,29 @@
+.activity-info {
+    margin-top:24px;
+    text-align:center;
+}
+
+.activity-info h3 {
+    margin:0 0 16px;
+    font-family:"SFUI", sans-serif;
+    font-size:20px;
+    font-weight:600;
+    color:var(--text-primary);
+}
+
+.activity-stats {
+    display:flex;
+    justify-content:space-between;
+    max-width:320px;
+    margin:auto;
+    font-size:16px;
+    font-weight:500;
+    color:var(--text-primary);
+}
+
+.activity-note {
+    margin-top:12px;
+    font-size:12px;
+    color:var(--text-secondary);
+    text-align:right;
+}

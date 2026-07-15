@@ -1,0 +1,162 @@
+.poster-controls {
+    position:absolute;
+    left:10px;
+    right:10px;
+    top:0;
+    bottom:0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    pointer-events:none;
+    z-index: 20;
+}
+
+.template-controls {
+    position:absolute;
+    left:0;
+    right:0;
+    align-items:center;
+    display:flex;
+    justify-content:space-between;
+}
+
+.poster-button {
+    position:absolute;
+    width:36px;
+    height:36px;
+    border:none;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0;
+    cursor:pointer;
+    opacity:0;
+    background:var(--button-background);
+    transition:
+        background .2s ease,
+        transform .2s ease,
+        opacity .2s ease;
+    pointer-events:auto;
+    backdrop-filter:blur(10px);
+    z-index:30;
+}
+
+
+/* Default Buttons */
+
+.maximize-button {
+    top:10px;
+    right:2px;
+}
+
+.close-button {
+    display:none;
+    top:10px;
+    right:2px;
+}
+
+.edit-button {
+    right:2px;
+    bottom:10px;
+}
+
+.previous-button {
+    left:2px;
+}
+
+.next-button {
+    right:2px;
+}
+
+.zoom-in-button,
+.zoom-out-button {
+    display:none;
+}
+
+.reset-button {
+    display:none;
+}
+
+
+/* Hover */
+
+.poster-button:hover .icon {
+    opacity:1;
+}
+
+.poster-viewer:hover .poster-button {
+    opacity:1;
+}
+
+.poster-button:hover::after {
+    opacity: 1;
+}
+
+.maximize-button:hover,
+.previous-button:hover,
+.next-button:hover,
+.edit-button:hover,
+.close-button:hover,
+.zoom-in-button:hover,
+.zoom-out-button:hover,
+.reset-button:hover {
+    transform:scale(1.2);
+    background:var(--button-hover);
+    opacity:1;
+}
+
+
+/* Tooltips */
+
+.poster-button::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    padding: 6px 8px;
+    border-radius: 8px;
+    background: var(--button-background);
+    color: var(--text-secondary);
+    font-family: "SFUI", sans-serif;
+    font-size: 12px;
+    line-height: 1;
+    font-weight: 500;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+        opacity .2s ease,
+        transform .2s ease;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,.08);
+}
+
+
+.zoom-in-button::after{
+    top: calc(100% + 20px);
+    transform: translateY(-50%);
+}
+
+.zoom-out-button::after{
+    left: -30%;
+    top: calc(100% + 20px);
+    transform: translateY(-50%);
+}
+
+.reset-button::after,
+.previous-button::after{
+    left: calc(100% + 10px);
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.maximize-button::after,
+.next-button::after,
+.edit-button::after,
+.close-button::after{
+    right: calc(100% + 10px);
+    top: 50%;
+    transform: translateY(-50%);
+}

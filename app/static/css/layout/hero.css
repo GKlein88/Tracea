@@ -1,0 +1,79 @@
+/* Hero = main content of home page*/
+
+.hero {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: minmax(480px, 1fr) minmax(400px, 480px);
+    gap: 80px;
+    align-items: start;
+}
+
+.hero-content {
+    width: 100%;
+    max-width: 600px;
+    min-width: 550px;
+}
+
+.hero h1 {
+    font-family: "SFUI", sans-serif;
+    font-weight: 700;
+    font-size: 72px;
+    line-height: 1.05;
+    letter-spacing: -2px;
+    margin: 10px 0 30px;
+}
+
+.hero-description {
+    font-size: 20px;
+    color: var(--text-secondary);
+    max-width: 450px;
+    margin-bottom: 40px;
+}
+
+.hero .file-name {
+    margin-top: 10px;
+    margin-left: 2px;
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.hero-note {
+    font-size: 18px;
+    display: block;
+    margin-top: 40px;
+    color: var(--text-secondary);
+}
+
+
+.hero-visual {
+    width: 100%;
+    max-width: 600px;
+    min-width: 480px;
+}
+
+
+/* Benefits */
+
+.hero-benefits {
+    margin-top: 45px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+}
+
+.benefit-item {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:14px;
+    color:var(--text-secondary);
+}
+
+.benefit-icon {
+    font-size:14px;
+    color:var(--accent);
+    font-weight:700;
+}

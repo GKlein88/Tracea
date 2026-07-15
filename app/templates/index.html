@@ -10,15 +10,7 @@
 
     <title>Tracéa — Premium Sport Wall Art</title>
 
-    <!-- Fonts -->
-    <link rel="stylesheet" href="/static/css/fonts.css">
-
-    <!-- Styles -->
-    <link rel="stylesheet" href="/static/css/style.css">
-    <link rel="stylesheet" href="/static/css/poster.css">
-    <link rel="stylesheet" href="/static/css/icons.css">
-    <link rel="stylesheet" href="/static/css/controls.css">
-    <link rel="stylesheet" href="/static/css/focus-mode.css">
+    <link rel="stylesheet" href="/static/css/main.css">
 </head>
 
 
@@ -45,7 +37,7 @@
         <!-- Hero section -->
         <section class="hero">
 
-            <!-- Hero text -->
+            <!-- Hero text (left side of the page) -->
             <div class="hero-content">
 
                 <h1>
@@ -53,12 +45,13 @@
                     into premium wall art.
                 </h1>
 
-                <p class="hero-description">
+                <!-- Hero  description -->
+                <p class="hero-description"> 
                     Transform your runs, hikes and rides
                     into beautifully crafted posters.
                 </p>
 
-
+                <!-- Hero  CTA -->
                 <input
                     type="file"
                     id="gpx-upload"
@@ -80,12 +73,12 @@
                     class="file-name"
                 ></p>
 
-
+                <!-- Hero  Note -->
                 <span class="hero-note">
                     Your route · Your story · Your artwork
                 </span>
 
-
+                <!-- Hero  Benefits -->
                 <div class="hero-benefits">
 
                     <div class="benefit-item">
@@ -124,6 +117,7 @@
                             <button
                                 class="poster-button previous-button"
                                 id="previous-template"
+                                data-tooltip="Previous design"
                                 type="button"
                             >
                                 <span class="icon previous-icon"></span>
@@ -133,6 +127,7 @@
                             <button
                                 class="poster-button next-button"
                                 id="next-template"
+                                data-tooltip="Next design"
                                 type="button"
                             >
                                 <span class="icon next-icon"></span>
@@ -144,6 +139,7 @@
                         <button
                             class="poster-button maximize-button"
                             id="maximize-button"
+                            data-tooltip="Focus mode"
                             type="button"
                         >
                             <span class="icon maximize-icon"></span>
@@ -153,6 +149,7 @@
                         <button
                             class="poster-button close-button"
                             id="close-button"
+                            data-tooltip="Close"
                             type="button"
                         >
                             <span class="icon close-icon"></span>
@@ -162,6 +159,7 @@
                         <button
                             class="poster-button edit-button"
                             id="edit-button"
+                            data-tooltip="Customize"
                             type="button"
                         >
                             <span class="icon edit-icon"></span>
@@ -171,6 +169,7 @@
                         <button
                             class="poster-button zoom-in-button"
                             id="zoom-in-button"
+                            data-tooltip="Zoom in"
                             type="button"
                         >
                             <span class="icon zoom-in-icon"></span>
@@ -180,6 +179,7 @@
                         <button
                             class="poster-button zoom-out-button"
                             id="zoom-out-button"
+                            data-tooltip="Zoom out"
                             type="button"
                         >
                             <span class="icon zoom-out-icon"></span>
@@ -188,6 +188,7 @@
                         <button
                             class="poster-button reset-button"
                             id="reset-zoom-button"
+                            data-tooltip="Reset view"
                             type="button"
                         >
                             <span class="icon reset-icon"></span>
