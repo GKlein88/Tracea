@@ -13,6 +13,18 @@ const zoomInButton = document.getElementById("zoom-in-button");
 const zoomOutButton = document.getElementById("zoom-out-button");
 const resetZoomButton = document.getElementById("reset-zoom-button");
 
+// Download features
+const downloadButton = document.getElementById("download-button");
+const downloadModal = document.getElementById("download-modal");
+const downloadClose = document.getElementById("download-close");
+const confirmDownload = document.getElementById("confirm-download");
+const downloadName = document.getElementById("download-name");
+const downloadFormat = document.getElementById("download-format");
+
+
+let currentActivityName = "";
+let currentPosterUrl = "";
+
 
 // Viewer state
 let zoomLevel = 1;
@@ -54,7 +66,7 @@ function resetZoom() {
 // Limit poster drag in focus mode
 function limitPan() {
     const maxMove =
-        250 * zoomLevel;
+        350 * zoomLevel;
         
     offsetX = Math.max(
         Math.min(offsetX, maxMove),
@@ -82,6 +94,55 @@ closeButton.addEventListener("click", () => {
 });
 
 
+// Download poster
+downloadButton.addEventListener("click",() => {
+        if (!currentPosterUrl) {
+            alert(
+                "No activity loaded."
+            );
+            return;
+        }
+
+        downloadName.value = currentActivityName;
+
+        downloadModal.classList.add(
+            "active"
+        );
+
+    }
+);
+
+downloadClose.addEventListener("click", () => {
+        downloadModal.classList.remove(
+            "active"
+        );
+    }
+);
+
+confirmDownload.addEventListener("click", async () => {
+        const name = downloadName.value || "tracea-poster";
+        const format = downloadFormat.value;
+
+        if (format !== "svg") {
+            alert(
+                "PNG and JPG export coming soon."
+            );
+            return;
+        }
+
+        const link = document.createElement("a");
+
+        link.href = currentPosterUrl;
+        link.download = `${name}.svg`;
+        link.click();
+
+        downloadModal.classList.remove(
+            "active"
+        );
+    }
+);
+
+
 // Exit focus mode with Escape key
 document.addEventListener("keydown", (event) => {
     if (
@@ -97,7 +158,6 @@ document.addEventListener("keydown", (event) => {
 // Zoom in
 zoomInButton.addEventListener("click", () => {
     zoomLevel = Math.min(zoomLevel + 0.25, 3);
-
     updatePosterTransform();
 });
 

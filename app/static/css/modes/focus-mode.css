@@ -75,10 +75,19 @@
     right:10px;
 }
 
+.focus-mode .download-button {
+    display:flex;
+    position:absolute;
+    top:10px;
+    right:56px;
+    left: auto;
+    bottom: auto;
+}
+
 .focus-mode .zoom-in-button {
     display:flex;
     position:absolute;
-    left: 50px;
+    left:56px;
     top:10px;
 }
 
@@ -92,10 +101,10 @@
 .focus-mode .reset-button {
     display:flex;
     position:absolute;
-    left:90px;
+    left:102px;
     top:10px;
 }
-
+²
 
 /* Zoom */
 .poster-viewer.focus-mode .poster-content {
@@ -111,6 +120,10 @@
 
 
 /* Tooltips */
-/* .poster-viewer.focus-mode .poster-button::after {
-    font-size: 16px;
-} */
+.focus-mode .download-button::after{
+    right: calc(100% + 10px);
+    top: 50%;
+    left:auto;
+    bottom:auto;
+    transform: translateY(-50%);
+}

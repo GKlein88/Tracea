@@ -13,6 +13,63 @@
     <link rel="stylesheet" href="/static/css/main.css">
 </head>
 
+<div class="download-modal" id="download-modal">
+
+    <div class="download-modal-content">
+
+        <button
+            class="download-close"
+            id="download-close"
+            type="button"
+        >
+            ×
+        </button>
+
+        <h3>
+            Download poster
+        </h3>
+
+        <label>
+            File name
+        </label>
+
+        <input
+            id="download-name"
+            type="text"
+        >
+
+        <label>
+            Format
+        </label>
+
+        <select id="download-format">
+
+            <option value="svg">
+                SVG
+            </option>
+
+            <option value="png">
+                PNG
+            </option>
+
+            <option value="jpg">
+                JPG
+            </option>
+
+        </select>
+
+
+        <button
+            class="primary-button"
+            id="confirm-download"
+            type="button"
+        >
+            Download
+        </button>
+
+    </div>
+
+</div>
 
 <body>
 
@@ -145,7 +202,6 @@
                             <span class="icon maximize-icon"></span>
                         </button>
 
-
                         <button
                             class="poster-button close-button"
                             id="close-button"
@@ -153,6 +209,15 @@
                             type="button"
                         >
                             <span class="icon close-icon"></span>
+                        </button>
+
+                        <button
+                            class="poster-button download-button"
+                            id="download-button"
+                            data-tooltip="Download poster"
+                            type="button"
+                        >
+                            <span class="icon download-icon"></span>
                         </button>
 
 

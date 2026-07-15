@@ -78,6 +78,9 @@ async function generatePoster(file) {
 // Display generated SVG and activity data
 function displayPoster(data) {
 
+    currentActivityName = data.activity_name;
+    currentPosterUrl = data.svg_url;
+
     // Insert generated SVG into poster container
     posterContent.innerHTML = `
         <img

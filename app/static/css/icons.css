@@ -12,6 +12,11 @@
     center / contain no-repeat;
 }
 
+.download-icon {
+    mask:url("/static/icons/arrow-down-to-line.svg")
+    center / contain no-repeat;
+}
+
 .close-icon {
     mask:url("/static/icons/x.svg")
     center / contain no-repeat;
