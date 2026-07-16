@@ -20,12 +20,15 @@
 
     "title": {
         "x": 900,
-        "y": 220,
-        "font_family": "FuturaPT",
-        "font_size": 90,
-        "font_weight": "700",
+        "y": 150,
+        "font_family": "FuturaPT Condensed",
+        "font_size": 120,
+        "font_weight": "800",
         "color": "#111111",
-        "text_anchor": "middle"
+        "text_anchor": "middle",
+        "max_width": 1500,
+        "max_lines": 2,
+        "line_height": 120
     },
 
     "stats": {

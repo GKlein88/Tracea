@@ -23,6 +23,9 @@ class TitleStyle(BaseModel):
     font_weight: str
     color: str
     text_anchor: str = "middle"
+    max_width: int
+    max_lines: int
+    line_height: int
 
 
 class StatsStyle(BaseModel):

@@ -1,5 +1,114 @@
+import base64
+from pathlib import Path
 import svgwrite
+from fontTools.ttLib import TTFont
 
+
+FONT_DIR = (
+    Path(__file__).parent.parent
+    / "static"
+    / "fonts"
+    / "Futura"
+)
+
+
+FONTS = [
+    ("FuturaPT", "200", "FuturaLT-Light.woff2"),
+    ("FuturaPT", "400", "FuturaLT.woff2"),
+    ("FuturaPT", "600", "FuturaLT-Heavy.woff2"),
+    ("FuturaPT", "700", "FuturaLT-Bold.woff2"),
+    ("FuturaPT", "800", "FuturaLT-ExtraBold.woff2"),
+
+    ("FuturaPT Condensed", "200", "FuturaLT-CondensedLight.woff2"),
+    ("FuturaPT Condensed", "400", "FuturaLT-Condensed.woff2"),
+    ("FuturaPT Condensed", "700", "FuturaLT-CondensedBold.woff2"),
+    ("FuturaPT Condensed", "800", "FuturaLT-CondensedExtraBold.woff2"),
+]
+
+
+def get_font_path(
+    family,
+    weight
+):
+    """
+    Find font file matching family and weight.
+    """
+
+    for font_family, font_weight, filename in FONTS:
+
+        if (
+            font_family == family
+            and int(font_weight) == int(weight)
+        ):
+            return FONT_DIR / filename
+
+    raise ValueError(
+        f"Font not found: {family} {weight}"
+    )
+    
+
+
+def measure_text_width(
+    text,
+    font_path,
+    font_size
+):
+    """
+    Measure text width using real font metrics.
+    """
+
+    font = TTFont(font_path)
+
+    cmap = font.getBestCmap()
+    hmtx = font["hmtx"]
+
+    units_per_em = font["head"].unitsPerEm
+
+    width = 0
+
+    for char in text:
+
+        glyph_name = cmap.get(
+            ord(char)
+        )
+
+        if glyph_name:
+            advance, _ = hmtx[glyph_name]
+            width += advance
+
+    return (width / units_per_em * font_size)
+
+
+def embed_fonts(dwg):
+    """
+    Embed Futura fonts inside SVG.
+    """
+
+    css = ""
+
+    for family, weight, filename in FONTS:
+
+        font_path = FONT_DIR / filename
+
+        font_data = base64.b64encode(
+            font_path.read_bytes()
+        ).decode("utf-8")
+
+        css += f"""
+        @font-face {{
+            font-family: "{family}";
+            src: url(data:font/woff2;base64,{font_data})
+            format("woff2");
+            font-weight: {weight};
+            font-style: normal;
+        }}
+        """
+
+    dwg.defs.add(
+        dwg.style(css)
+    )
+    
+      
 
 def create_path(points):
     """
@@ -65,6 +174,73 @@ def draw_route(
     )
 
 
+def fit_text_size(
+    text,
+    max_width,
+    font_path,
+    font_size
+):
+    """
+    Reduce font size until text fits.
+    """
+
+    while (
+        measure_text_width(
+            text,
+            font_path,
+            font_size
+        )
+        > max_width
+        and font_size > 20
+    ):
+        font_size -= 2
+
+    return font_size
+
+
+def split_title(
+    text,
+    max_width,
+    font_path,
+    font_size
+):
+    """
+    Split title according to real text width.
+    """
+
+    words = text.split(" ")
+
+    lines = []
+    current = ""
+
+    for word in words:
+
+        test = (
+            f"{current} {word}"
+            if current
+            else word
+        )
+
+        width = measure_text_width(
+            test,
+            font_path,
+            font_size
+        )
+
+        if width <= max_width:
+            current = test
+
+        else:
+            if current:
+                lines.append(current)
+
+            current = word
+
+    if current:
+        lines.append(current)
+
+    return lines
+
 
 def draw_title(
     dwg,
@@ -75,21 +251,78 @@ def draw_title(
     Draw poster title.
     """
 
-    dwg.add(
-        dwg.text(
-            config.title,
-            insert=(
-                template.title.x,
-                template.title.y
-            ),
-            font_family=template.title.font_family,
-            font_size=template.title.font_size,
-            font_weight=template.title.font_weight,
-            fill=template.title.color,
-            text_anchor=template.title.text_anchor
-        )
+    font_path = get_font_path(
+        template.title.font_family,
+        template.title.font_weight
     )
 
+    font_size = template.title.font_size
+
+    lines = split_title(
+        config.title,
+        template.title.max_width,
+        font_path,
+        font_size
+    )
+
+    if len(lines) > 1:
+
+        max_line_width = max(
+            measure_text_width(
+                line,
+                font_path,
+                font_size
+            )
+            for line in lines
+        )
+
+        while (
+            max_line_width > template.title.max_width
+            and font_size > 20
+        ):
+            font_size -= 2
+
+            max_line_width = max(
+                measure_text_width(
+                    line,
+                    font_path,
+                    font_size
+                )
+                for line in lines
+            )
+
+    title = dwg.text(
+    "",
+        insert=(
+            template.title.x,
+            template.title.y
+        ),
+        dominant_baseline="hanging",
+        font_family=template.title.font_family,
+        font_size=font_size,
+        font_weight=template.title.font_weight,
+        fill=template.title.color,
+        text_anchor=template.title.text_anchor
+    )
+
+    for index, line in enumerate(lines):
+
+        title.add(
+            dwg.tspan(
+                line,
+                x=[
+                    template.title.x
+                ],
+                dy=[
+                    0
+                    if index == 0
+                    else template.title.line_height
+                ]
+            )
+        )
+
+    dwg.add(title)
+    
 
 
 def draw_statistics(
@@ -203,6 +436,8 @@ def generate_svg(
             template.height
         )
     )
+    
+    embed_fonts(dwg)
 
 
     draw_background(
