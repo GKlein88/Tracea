@@ -20,7 +20,7 @@ class TitleStyle(BaseModel):
     y: int
     font_family: str
     font_size: int
-    font_weight: str
+    font_weight: int
     color: str
     text_anchor: str = "middle"
     max_width: int
@@ -28,17 +28,25 @@ class TitleStyle(BaseModel):
     line_height: int
 
 
+class StatsPositions(BaseModel):
+    left: int
+    center: int
+    right: int
+
+
 class StatsStyle(BaseModel):
-    x: int
+    layout: str
     y: int
     font_family: str
     font_size: int
-    font_weight: str
+    font_weight: int
     color: str
-    gap: int = 20
-    text_anchor: str = "middle"
-    layout: str = "horizontal"
+    text_anchor: str
 
+    positions: StatsPositions | None = None
+    side_margin_two: int | None = None
+    
+    
 
 class PosterTemplate(BaseModel):
     name: str

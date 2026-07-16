@@ -23,7 +23,7 @@
         "y": 150,
         "font_family": "FuturaPT Condensed",
         "font_size": 120,
-        "font_weight": "800",
+        "font_weight": 800,
         "color": "#111111",
         "text_anchor": "middle",
         "max_width": 1500,
@@ -32,14 +32,18 @@
     },
 
     "stats": {
-        "x": 900,
-        "y": 2150,
+        "layout": "positions",
         "font_family": "FuturaPT",
-        "font_size": 40,
-        "font_weight": "500",
-        "color": "#111111",
-        "gap": 80,
-        "text_anchor": "middle",
-        "layout": "horizontal"
-  }
+        "font_size": 50,
+        "font_weight": 700,
+        "color": "#FFFFFF",
+        "positions": {
+            "left": 200,
+            "center": 900,
+            "right": 1600
+        },
+        "side_margin_two": 300,
+        "y": 2150,
+        "text_anchor": "middle"
+    }
 }
