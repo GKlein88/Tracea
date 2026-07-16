@@ -6,7 +6,7 @@ class RouteArea(BaseModel):
     height: int
     offset_x: int = 0
     offset_y: int = 0
-    padding: int = 50
+    padding: int = 0
 
 
 class PosterStyle(BaseModel):
@@ -15,19 +15,57 @@ class PosterStyle(BaseModel):
     stroke_width: int
 
 
-class StatsConfig(BaseModel):
-    show_distance: bool = True
-    show_elevation: bool = True
-    show_duration: bool = True
+class TitleStyle(BaseModel):
+    x: int
+    y: int
+    font_family: str
+    font_size: int
+    font_weight: str
+    color: str
+    text_anchor: str = "middle"
 
-    duration_format: str = "hms"
+
+class StatsStyle(BaseModel):
+    x: int
+    y: int
+    font_family: str
+    font_size: int
+    font_weight: str
+    color: str
+    gap: int = 20
+    text_anchor: str = "middle"
+    layout: str = "horizontal"
 
 
 class PosterTemplate(BaseModel):
     name: str
+
     width: int
     height: int
 
     route_area: RouteArea
+
     style: PosterStyle
-    stats: StatsConfig
+
+    title: TitleStyle
+    stats: StatsStyle
+
+
+
+class PosterConfig(BaseModel):
+    """
+    Editable poster content.
+    This is what the frontend editor will modify.
+    """
+
+    title: str
+
+    distance: str
+    elevation: str
+    duration: str
+
+    duration_format: str = "prime"
+
+    show_distance: bool = True
+    show_elevation: bool = True
+    show_duration: bool = True

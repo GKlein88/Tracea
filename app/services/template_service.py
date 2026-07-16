@@ -10,10 +10,22 @@ TEMPLATE_DIR = BASE_DIR / "poster-templates"
 
 
 def load_template(name: str) -> PosterTemplate:
+    """
+    Load a poster template configuration.
+    """
 
     template_file = TEMPLATE_DIR / f"{name}.json"
 
-    with open(template_file, "r") as file:
+    if not template_file.exists():
+        raise FileNotFoundError(
+            f"Template '{name}' not found"
+        )
+
+    with open(
+        template_file,
+        "r",
+        encoding="utf-8"
+    ) as file:
         data = json.load(file)
 
     return PosterTemplate(**data)

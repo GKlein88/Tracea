@@ -1,7 +1,9 @@
 {
     "name": "minimal",
+
     "width": 1800,
     "height": 2400,
+
     "route_area": {
         "width": 1500,
         "height": 1500,
@@ -9,15 +11,32 @@
         "offset_y": 600,
         "padding": 50
     },
+
     "style": {
         "background": "#FAFAFA",
         "route_color": "#111111",
         "stroke_width": 5
     },
+
+    "title": {
+        "x": 900,
+        "y": 220,
+        "font_family": "FuturaPT",
+        "font_size": 90,
+        "font_weight": "700",
+        "color": "#111111",
+        "text_anchor": "middle"
+    },
+
     "stats": {
-        "show_distance": true,
-        "show_elevation": true,
-        "show_duration": true,
-        "duration_format": "prime"
+        "x": 900,
+        "y": 2150,
+        "font_family": "FuturaPT",
+        "font_size": 40,
+        "font_weight": "500",
+        "color": "#111111",
+        "gap": 80,
+        "text_anchor": "middle",
+        "layout": "horizontal"
   }
 }
