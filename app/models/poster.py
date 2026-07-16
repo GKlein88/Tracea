@@ -28,10 +28,26 @@ class TitleStyle(BaseModel):
     line_height: int
 
 
-class StatsPositions(BaseModel):
+class StatsPositions2(BaseModel):
+    left: int
+    right: int
+
+
+class StatsPositions3(BaseModel):
     left: int
     center: int
     right: int
+
+
+class StatsAnchor2(BaseModel):
+    left: str = "start"
+    right: str = "end"
+
+
+class StatsAnchor3(BaseModel):
+    left: str = "start"
+    center: str = "middle"
+    right: str = "end"
 
 
 class StatsStyle(BaseModel):
@@ -41,10 +57,11 @@ class StatsStyle(BaseModel):
     font_size: int
     font_weight: int
     color: str
-    text_anchor: str
 
-    positions: StatsPositions | None = None
-    side_margin_two: int | None = None
+    positions2: StatsPositions2 | None = None
+    text_anchors2: StatsAnchor2 | None = None
+    positions3: StatsPositions3 | None = None
+    text_anchors3: StatsAnchor3 | None = None
     
     
 

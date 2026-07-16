@@ -39,20 +39,24 @@ def draw_statistics(
 
         if count == 3:
             positions = [
-                template.stats.positions.left,
-                template.stats.positions.center,
-                template.stats.positions.right
+                template.stats.positions3.left,
+                template.stats.positions3.center,
+                template.stats.positions3.right
+            ]
+            anchors = [
+                template.stats.text_anchors3.left,
+                template.stats.text_anchors3.center,
+                template.stats.text_anchors3.right
             ]
 
         elif count == 2:
             positions = [
-                template.stats.side_margin_two,
-                template.width - template.stats.side_margin_two
+                template.stats.positions2.left,
+                template.stats.positions2.right
             ]
-
-        else:
-            positions = [
-                template.stats.x
+            anchors = [
+                template.stats.text_anchors2.left,
+                template.stats.text_anchors2.right
             ]
 
         for index, value in enumerate(stats):
@@ -64,33 +68,11 @@ def draw_statistics(
                         positions[index],
                         template.stats.y
                     ),
+                    dominant_baseline="hanging",
                     font_family=template.stats.font_family,
                     font_size=template.stats.font_size,
                     font_weight=template.stats.font_weight,
                     fill=template.stats.color,
-                    text_anchor=template.stats.text_anchor
+                    text_anchor=anchors[index]
                 )
             )
-
-    else:
-
-        current_y = template.stats.y
-
-        for value in stats:
-
-            dwg.add(
-                dwg.text(
-                    value,
-                    insert=(
-                        template.stats.x,
-                        current_y
-                    ),
-                    font_family=template.stats.font_family,
-                    font_size=template.stats.font_size,
-                    font_weight=template.stats.font_weight,
-                    fill=template.stats.color,
-                    text_anchor=template.stats.text_anchor
-                )
-            )
-
-            current_y += template.stats.gap

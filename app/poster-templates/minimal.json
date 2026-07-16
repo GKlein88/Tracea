@@ -5,10 +5,10 @@
     "height": 2400,
 
     "route_area": {
-        "width": 1500,
-        "height": 1500,
+        "width": 1450,
+        "height": 1450,
         "offset_x": 150,
-        "offset_y": 600,
+        "offset_y": 500,
         "padding": 50
     },
 
@@ -22,28 +22,39 @@
         "x": 900,
         "y": 150,
         "font_family": "FuturaPT Condensed",
-        "font_size": 120,
+        "font_size": 125,
         "font_weight": 800,
         "color": "#111111",
         "text_anchor": "middle",
         "max_width": 1500,
         "max_lines": 2,
-        "line_height": 120
+        "line_height": 125
     },
 
     "stats": {
         "layout": "positions",
-        "font_family": "FuturaPT",
-        "font_size": 50,
+        "font_family": "FuturaPT Condensed",
+        "font_size": 100,
         "font_weight": 700,
-        "color": "#FFFFFF",
-        "positions": {
+        "color": "#111111",
+        "positions2": {
+            "left": 300,
+            "right": 1500
+        },
+        "text_anchors2": {
+            "left": "start",
+            "right": "end"
+        },
+        "positions3": {
             "left": 200,
             "center": 900,
             "right": 1600
         },
-        "side_margin_two": 300,
-        "y": 2150,
-        "text_anchor": "middle"
+        "text_anchors3": {
+            "left": "start",
+            "center": "middle",
+            "right": "end"
+        },
+        "y": 2150
     }
 }
