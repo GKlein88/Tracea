@@ -11,7 +11,6 @@ from app.geo.clean import clean_track
 from app.geo.simplify import simplify_points
 from app.geo.projection import project_points
 from app.geo.elevation import smooth_elevation
-
 from app.geo.statistics import (
     calculate_distance,
     calculate_elevation_gain,
@@ -21,6 +20,7 @@ from app.geo.statistics import (
 from app.svg.renderer import generate_svg
 
 from app.utils.files import create_output_filename
+from app.utils.formatting import format_duration
 
 from app.services.template_service import load_template
 
@@ -39,7 +39,8 @@ async def generate_poster(file: UploadFile):
     try:
 
         # Load template
-        template = load_template("minimal")
+        selected_template = "minimal"
+        template = load_template(selected_template)
 
 
         # Save uploaded GPX temporarily
@@ -69,20 +70,20 @@ async def generate_poster(file: UploadFile):
 
         sport = activity.sport
 
-        config = SPORT_CONFIGS[sport]
+        sport_config = SPORT_CONFIGS[sport]
 
 
         # Clean track
         cleaned_points = clean_track(
             raw_points,
-            config,
+            sport_config,
         )
 
 
         # Smooth elevation
         smoothed_points = smooth_elevation(
             cleaned_points,
-            config,
+            sport_config,
         )
 
 
@@ -117,14 +118,13 @@ async def generate_poster(file: UploadFile):
 
         # Editable poster content
         poster_config = PosterConfig(
-
             title=activity_name.upper(),
-
-            distance=f"{distance_km:.1f} km",
-
-            elevation=f"{elevation_gain_m} m",
-
-            duration=str(duration_seconds)
+            distance=f"{distance_km:.1f} KM",
+            elevation=f"{elevation_gain_m} M",
+            duration=format_duration(
+                duration_seconds, 
+                template.stats.duration_format
+            )
         )
 
 
@@ -146,17 +146,13 @@ async def generate_poster(file: UploadFile):
         return {
 
             "success": True,
-
             "activity_name": activity_name,
-
             "sport": sport,
-
             "svg_url": (
                 f"/outputs/{Path(output_file).name}"
             ),
-
             "template": template.name,
-
+            
             "statistics": {
                 "original_points": len(raw_points),
                 "cleaned_points": len(cleaned_points),

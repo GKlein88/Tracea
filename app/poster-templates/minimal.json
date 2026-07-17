@@ -36,6 +36,7 @@
         "font_family": "FuturaPT Condensed",
         "font_size": 100,
         "font_weight": 700,
+        "duration_format": "prime",
         "color": "#111111",
         "positions2": {
             "left": 300,

@@ -3,8 +3,8 @@ import svgwrite
 from .fonts import embed_fonts
 from .background import draw_background
 from .route import draw_route
-from .text import draw_title
-from .stats import draw_statistics
+from .title import draw_title
+from .stats import draw_stats
 
 
 
@@ -42,7 +42,7 @@ def generate_svg(
         template
     )
 
-    draw_statistics(
+    draw_stats(
         dwg,
         config,
         template

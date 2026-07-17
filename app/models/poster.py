@@ -56,6 +56,7 @@ class StatsStyle(BaseModel):
     font_family: str
     font_size: int
     font_weight: int
+    duration_format: str = "prime"
     color: str
 
     positions2: StatsPositions2 | None = None

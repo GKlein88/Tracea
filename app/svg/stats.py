@@ -4,7 +4,7 @@ from .fonts import (
 )
 
 
-def draw_statistics(
+def draw_stats(
     dwg,
     config,
     template
@@ -29,7 +29,7 @@ def draw_statistics(
         stats.append(
             config.duration
         )
-
+        
     if not stats:
         return
 
