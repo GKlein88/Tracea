@@ -10,52 +10,44 @@
  * @param {string} format
  * @returns {string}
  */
-export function formatDuration(
-    seconds,
-    format = "hms"
-) {
 
-    if (
-        seconds === undefined ||
-        seconds === null ||
-        seconds < 0
-    ) {
-        return "00:00:00";
+/**
+ * Helper to parse raw total seconds into hours, minutes, and seconds.
+ */
+export function parseSeconds(totalSeconds) {
+    const sec = parseInt(totalSeconds, 10) || 0;
+    const hours = Math.floor(sec / 3600);
+    const minutes = Math.floor((sec % 3600) / 60);
+    const seconds = sec % 60;
+    return { hours, minutes, seconds };
+}
+
+/**
+ * Formats duration into string matching backend formatting.py logic.
+ */
+
+export function formatDuration(durationObj, style = "clock") {
+    const hours = parseInt(durationObj.hours, 10) || 0;
+    const minutes = parseInt(durationObj.minutes, 10) || 0;
+    const secs = parseInt(durationObj.seconds, 10) || 0;
+
+    const pad2 = (num) => String(num).padStart(2, "0");
+
+    if (style === "clock") {
+        return `${pad2(hours)}:${pad2(minutes)}:${pad2(secs)}`;
     }
 
-    const hours = Math.floor(
-        seconds / 3600
-    );
-
-    const minutes = Math.floor(
-        (seconds % 3600) / 60
-    );
-
-    const secs = Math.floor(
-        seconds % 60
-    );
-
-    const hh = String(hours).padStart(2, "0");
-    const mm = String(minutes).padStart(2, "0");
-    const ss = String(secs).padStart(2, "0");
-
-    switch(format) {
-
-        // 01h02m36s
-        case "hms":
-            return `${hh}h${mm}m${ss}s`;
-
-        // 01h02'36"
-        case "prime":
-            return `${hh}h${mm}'${ss}"`;
-
-        // 01h02
-        case "short":
-            return `${hh}h${mm}`;
-
-        // 01:02:36
-        case "clock":
-        default:
-            return `${hh}:${mm}:${ss}`;
+    if (style === "hms") {
+        return `${hours}h${pad2(minutes)}m${pad2(secs)}s`;
     }
+
+    if (style === "prime") {
+        return `${hours}h${pad2(minutes)}'${pad2(secs)}"`;
+    }
+
+    if (style === "short") {
+        return `${hours}h${pad2(minutes)}`;
+    }
+
+    return `${pad2(hours)}:${pad2(minutes)}:${pad2(secs)}`;
 }

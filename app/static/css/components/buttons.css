@@ -1,0 +1,43 @@
+/* --- SHARED BUTTON BASE STYLES --- */
+.primary-button,
+.secondary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 42px;
+    border: none;
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: 500;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: background 0.2s ease, transform 0.2s ease, color 0.2s ease;
+}
+
+/* Base interactive feedback on click */
+.primary-button:active,
+.secondary-button:active {
+    transform: translateY(0);
+}
+
+/* --- PRIMARY BUTTON VARIANT --- */
+.primary-button {
+    background: var(--accent);
+    color: white;
+}
+
+.primary-button:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+}
+
+/* --- SECONDARY BUTTON VARIANT --- */
+.secondary-button {
+    background: var(--button-background);
+    color: var(--text-primary);
+}
+
+.secondary-button:hover {
+    background: var(--button-hover);
+    transform: translateY(-2px);
+}

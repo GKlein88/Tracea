@@ -6,7 +6,7 @@ from app.models.poster import PosterTemplate
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-TEMPLATE_DIR = BASE_DIR / "poster-templates"
+TEMPLATE_DIR = BASE_DIR / "static/poster-templates"
 
 
 def load_template(name: str) -> PosterTemplate:

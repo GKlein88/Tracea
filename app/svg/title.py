@@ -19,22 +19,13 @@ def split_title(text, max_width, font_path, font_size):
             else word
         )
 
-        if (
-            measure_text_width(
-                test,
-                font_path,
-                font_size
-            )
-            <= max_width
-        ):
+        if (measure_text_width(test, font_path, font_size) <= max_width):
             current = test
-
         else:
             if current:
                 lines.append(current)
-
             current = word
-
+            
     if current:
         lines.append(current)
 
@@ -60,6 +51,7 @@ def draw_title(dwg, config, template):
 
     title = dwg.text(
         "",
+        id="poster-title",
         insert=(
             template.title.x,
             template.title.y
@@ -69,7 +61,8 @@ def draw_title(dwg, config, template):
         font_size=font_size,
         font_weight=template.title.font_weight,
         fill=template.title.color,
-        text_anchor=template.title.text_anchor
+        text_anchor=template.title.text_anchor,
+        class_=f"line-height-{template.title.line_height} max-width-{template.title.max_width}"
     )
 
     for index, line in enumerate(lines):

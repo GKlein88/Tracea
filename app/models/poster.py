@@ -84,16 +84,16 @@ class PosterTemplate(BaseModel):
 class PosterConfig(BaseModel):
     """
     Editable poster content.
-    This is what the frontend editor will modify.
     """
-
     title: str
+    distance_text: str
+    elevation_text: str
+    duration_text: str
 
-    distance: str
-    elevation: str
-    duration: str
-
-    duration_format: str = "prime"
+    duration_hours: int = 0
+    duration_minutes: int = 0
+    duration_seconds: int = 0
+    duration_format: str = "clock"
 
     show_distance: bool = True
     show_elevation: bool = True

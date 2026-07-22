@@ -11,13 +11,15 @@ export const appState = {
     // Generated poster
     posterUrl: "",
 
+    // Active loaded template configuration (JSON)
+    currentTemplate: null,
+
     // GPX statistics
     statistics: {
-        distance: "",
-        elevation: "",
+        distance: 0,
+        elevation: 0,
         duration: 0
     },
-
 
     // Current editor configuration
     editorConfig: {
@@ -26,11 +28,11 @@ export const appState = {
         stats: {
             distance: {
                 enabled: true,
-                value: ""
+                value: 0
             },
             elevation: {
                 enabled: true,
-                value: ""
+                value: 0
             },
             duration: {
                 enabled: true,

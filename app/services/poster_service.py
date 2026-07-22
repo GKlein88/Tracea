@@ -35,104 +35,68 @@ async def generate_poster(file: UploadFile):
 
     temp_path = None
 
-
     try:
 
         # Load template
         selected_template = "minimal"
         template = load_template(selected_template)
 
-
         # Save uploaded GPX temporarily
-        with tempfile.NamedTemporaryFile(
-            delete=False,
-            suffix=".gpx"
-        ) as temp_file:
-
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".gpx") as temp_file:
             temp_path = temp_file.name
-
-            shutil.copyfileobj(
-                file.file,
-                temp_file
-            )
-
+            shutil.copyfileobj(file.file, temp_file)
 
         # Parse GPX
         activity = parse_gpx(temp_path)
-
-
-        activity_name = (
-            activity.name
-            or Path(file.filename).stem
-        )
-
+        activity_name = (activity.name or Path(file.filename).stem)
         raw_points = activity.points
-
         sport = activity.sport
-
         sport_config = SPORT_CONFIGS[sport]
 
-
         # Clean track
-        cleaned_points = clean_track(
-            raw_points,
-            sport_config,
-        )
-
+        cleaned_points = clean_track(raw_points, sport_config)
 
         # Smooth elevation
-        smoothed_points = smooth_elevation(
-            cleaned_points,
-            sport_config,
-        )
-
+        smoothed_points = smooth_elevation(cleaned_points, sport_config)
 
         # Statistics
-        distance_km = calculate_distance(
-            cleaned_points
-        )
-
-
-        elevation_gain_m = calculate_elevation_gain(
-            smoothed_points
-        )
-
-
-        duration_seconds = calculate_duration(
-            cleaned_points
-        )
-
+        distance_km = calculate_distance(cleaned_points)
+        elevation_gain_m = calculate_elevation_gain(smoothed_points)
+        duration_seconds = calculate_duration(cleaned_points)
 
         # Simplify route
-        simplified_points = simplify_points(
-            cleaned_points
-        )
-
+        simplified_points = simplify_points(cleaned_points)
 
         # Project GPS -> SVG
-        svg_points = project_points(
-            simplified_points,
-            template.route_area
-        )
+        svg_points = project_points(simplified_points, template.route_area)
 
+        # Extract hours, minutes, and seconds from total duration_seconds
+        calc_hours = duration_seconds // 3600
+        calc_minutes = (duration_seconds % 3600) // 60
+        calc_seconds = duration_seconds % 60
+        
+        # Format duration
+        formatted_duration = format_duration(
+            hours=calc_hours,
+            minutes=calc_minutes,
+            secs=calc_seconds,
+            style=template.stats.duration_format
+        )
 
         # Editable poster content
         poster_config = PosterConfig(
             title=activity_name.upper(),
-            distance=f"{distance_km:.1f} KM",
-            elevation=f"{elevation_gain_m} M",
-            duration=format_duration(
-                duration_seconds, 
-                template.stats.duration_format
-            )
+            distance_text=f"{distance_km:.1f} KM",
+            elevation_text=f"{elevation_gain_m} M",
+            duration_text=formatted_duration,
+            duration_hours=calc_hours,
+            duration_minutes=calc_minutes,
+            duration_seconds=calc_seconds,
+            duration_format=template.stats.duration_format
         )
-
 
         # Output filename
-        output_file = create_output_filename(
-            activity_name
-        )
-
+        output_file = create_output_filename(activity_name)
 
         # Generate SVG
         generate_svg(
@@ -141,18 +105,15 @@ async def generate_poster(file: UploadFile):
             config=poster_config,
             output_file=output_file
         )
-
-
+        
         return {
-
             "success": True,
             "activity_name": activity_name,
             "sport": sport,
             "svg_url": (
                 f"/outputs/{Path(output_file).name}"
             ),
-            "template": template.name,
-            
+            "template": template.name,            
             "statistics": {
                 "original_points": len(raw_points),
                 "cleaned_points": len(cleaned_points),
@@ -162,19 +123,16 @@ async def generate_poster(file: UploadFile):
                 "elevation_gain_m": elevation_gain_m,
                 "duration_seconds": duration_seconds,
             },
-
             "content": {
                 "title": poster_config.title,
-                "distance_text": poster_config.distance,
-                "elevation_text": poster_config.elevation,
-                "duration_text": poster_config.duration,
-                "duration_format": poster_config.duration_format,
+                "distance_text": poster_config.distance_text,
+                "elevation_text": poster_config.elevation_text,
+                "duration_text": poster_config.duration_text,
+                "duration_format": poster_config.duration_format
             }
         }
 
-
     finally:
-
         if temp_path:
             Path(temp_path).unlink(
                 missing_ok=True

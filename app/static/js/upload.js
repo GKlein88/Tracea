@@ -2,10 +2,9 @@
 // GPX Upload & Poster Generation
 // =====================================
 
-
 import { appState } from "./app-state.js";
-import { formatDuration } from "./formatter.js";
-
+import { formatDuration, parseSeconds } from "./formatter.js";
+import { loadEditorValues } from "./editor.js"; 
 
 // File input
 const fileInput = document.getElementById("gpx-upload");
@@ -16,129 +15,122 @@ const uploadButton = document.getElementById("upload-button");
 
 // Poster elements
 const posterContent = document.getElementById("poster-content");
-const activityInfo = document.getElementById("activity-info");
+
 
 // Open explorer
 uploadButton.addEventListener("click", () => {
-        fileInput.click();
-    }
-);
-
+    fileInput.click();
+});
 
 // File selected
 fileInput.addEventListener("change", () => {
+    const file = fileInput.files[0];
 
-        const file =
-            fileInput.files[0];
-
-        if (!file) {
-            return;
-        }
-
-        if (
-            !file.name
-                .toLowerCase()
-                .endsWith(".gpx")
-        ) {
-            fileName.textContent = "Please select a GPX file.";
-            fileInput.value = "";
-            return;
-        }
-
-        fileName.textContent = file.name;
-
-        generatePoster(file);
+    if (!file) {
+        return;
     }
-);
+
+    if (!file.name.toLowerCase().endsWith(".gpx")) {
+        fileName.textContent = "Please select a GPX file.";
+        fileInput.value = "";
+        return;
+    }
+
+    fileName.textContent = file.name;
+
+    generatePoster(file);
+});
 
 
 // Generate poster
-
 async function generatePoster(file) {
-
-    const formData =
-        new FormData();
-
+    const formData = new FormData();
     formData.append("file", file);
 
     uploadButton.textContent = "Generating ...";
 
     showGeneratingState();
 
-    const response =
-        await fetch(
-            "/generate",
-            {
-                method:"POST",
-                body:formData
-            }
-        );
+    try {
+        const response = await fetch("/generate", {
+            method: "POST",
+            body: formData
+        });
 
-    const data = await response.json();
+        const data = await response.json();
+        // console.log(data);
 
-    if (!data.success) {
-        uploadButton.textContent =
-            "Upload activity";
-        return;
+        if (!data.success) {
+            uploadButton.textContent = "Upload activity";
+            return;
+        }
+
+        await displayPoster(data);
+    } catch (error) {
+        console.error("Error generating poster:", error);
+    } finally {
+        uploadButton.textContent = "Upload activity";
     }
-
-    displayPoster(data);
-
-    uploadButton.textContent = "Upload activity";
 }
 
-
 // Display poster
-function displayPoster(data) {
+export async function displayPoster(data) {
 
+    // Set appState Values
     appState.activityName = data.activity_name;
     appState.posterUrl = data.svg_url;
 
     appState.statistics = {
-        distance: `${data.statistics.distance_km.toFixed(1)} km`,
-        elevation: `${data.statistics.elevation_gain_m} m`,
-        duration:  data.statistics.duration_seconds ?? 0
+        distance: data.statistics.distance_km ?? 0,
+        elevation: data.statistics.elevation_gain_m ?? 0,
+        duration: data.statistics.duration_seconds ?? 0
     };
 
-    posterContent.innerHTML = `
-        <img
-            src="${data.svg_url}"
-            alt="Generated route poster"
-        >
-    `;
+    appState.editorConfig.title = data.activity_name;
 
-    activityInfo.innerHTML = `
-        <h3> ${data.activity_name} </h3>
+    appState.editorConfig.stats.distance.value = data.statistics.distance_km ?? 0
+    appState.editorConfig.stats.elevation.value = data.statistics.elevation_gain_m ?? 0
+    appState.editorConfig.stats.duration.value = formatDuration(parseSeconds(data.statistics.duration_seconds ?? 0))
 
-        <div class="activity-stats">
-            <span>
-                ↗ ${appState.statistics.distance}
-            </span>
+    // 1. Load active template JSON config into appState
+    const templateName = data.template || appState.editorConfig.template || "minimal";
+    if (data.template_config) {
+        // If backend sends the JSON config directly in response
+        appState.currentTemplate = data.template_config;
+    } else {
+        // Otherwise fetch the template JSON file directly
+        try {
+            const templateResponse = await fetch(`/static/poster-templates/${templateName}.json`);
+            if (templateResponse.ok) {
+                appState.currentTemplate = await templateResponse.json();
+            }
+        } catch (err) {
+            console.warn("Could not load template JSON configuration:", err);
+        }
+    }
 
-            <span>
-                ▲ ${appState.statistics.elevation}
-            </span>
+    // 2. Fetch and inject raw SVG into DOM
+    try {
+        const svgResponse = await fetch(data.svg_url);
+        const svgContent = await svgResponse.text();
+        posterContent.innerHTML = svgContent;
+    } catch (error) {
+        console.error("Error loading interactive SVG:", error);
+        posterContent.innerHTML = `<img src="${data.svg_url}" alt="Generated route poster">`;
+    }
 
-            <span>
-                ⏱ ${formatDuration(
-                    appState.statistics.duration,
-                    "clock"
-                )}
-</span>
-        </div>
+    // 3. Update editor sidebar input values from appState & currentTemplate
+    if (typeof loadEditorValues === "function") {
+        loadEditorValues();
+    }
 
-        <p class="activity-note">
-            * Distance and elevation gain are calculated from your GPX file
-        </p>
-    `;
 }
 
 // Loading state
-
 function showGeneratingState() {
-
     appState.posterUrl = "";
     appState.activityName = "";
+    appState.currentTemplate = null;
 
     posterContent.innerHTML = `
         <div class="poster-empty-state loading">
@@ -148,12 +140,8 @@ function showGeneratingState() {
         </div>
     `;
 
-    activityInfo.innerHTML = "";
-
     // Reset viewer if available
-    if (
-        window.resetPosterZoom
-    ) {
+    if (window.resetPosterZoom) {
         window.resetPosterZoom();
     }
 }

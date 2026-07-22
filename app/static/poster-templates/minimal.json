@@ -28,7 +28,7 @@
         "text_anchor": "middle",
         "max_width": 1500,
         "max_lines": 2,
-        "line_height": 125
+        "line_height": 135
     },
 
     "stats": {
@@ -36,7 +36,7 @@
         "font_family": "FuturaPT Condensed",
         "font_size": 100,
         "font_weight": 700,
-        "duration_format": "prime",
+        "duration_format": "clock",
         "color": "#111111",
         "positions2": {
             "left": 300,

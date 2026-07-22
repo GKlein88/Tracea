@@ -148,96 +148,121 @@
 
                     <div class="editor-panel" id="editor-panel">
 
-                        <h3>Customize poster</h3>
-
-                        <!-- Template -->
-                        <label>Template</label>
-                        <div id="template-list">
-
+                        <div class="editor-header">
+                            <h3>Customize poster</h3>
+                            <p class="editor-subtitle">Adjust design & telemetry data</p>
                         </div>
 
+                        <div class="editor-body">
 
-                        <!-- Title -->
-                        <label>Title</label>
-                        <input
-                            id="editor-title"
-                            type="text"
-                        >
+                            <div class="editor-section">
+                                <span class="section-title">Design</span>
+                                
+                                <div class="editor-field">
+                                    <label>Template</label>
+                                    <div id="template-list" class="template-selector"></div>
+                                </div>
+                            </div>
 
-                        <!-- Distance -->
-                        <div class="editor-stat">
-                            <label>
-                                <input
-                                    id="show-distance"
-                                    type="checkbox"
-                                    checked
-                                >
-                                Distance
-                            </label>
+                            <div class="editor-section">
+                                <span class="section-title">Typography</span>
 
-                            <input
-                                id="editor-distance"
-                                type="text"
-                            >
-                        </div>
+                                <div class="editor-field">
+                                    <label for="editor-title">Title</label>
+                                    <input id="editor-title" type="text" placeholder="Activity Title">
+                                </div>
 
-                        <!-- Elevation -->
-                        <div class="editor-stat">
-                            <label>
-                                <input
-                                    id="show-elevation"
-                                    type="checkbox"
-                                    checked
-                                >
-                                Elevation
-                            </label>
+                                <div class="editor-grid-2">
+                                    <div class="editor-field">
+                                        <label for="title-font-size">Size</label>
+                                        <div class="input-wrapper">
+                                            <input id="title-font-size" type="text" inputmode="numeric" pattern="[0-9]*" value="125">
+                                            <span class="unit-label">PX</span>
+                                        </div>
+                                    </div>
 
-                            <input
-                                id="editor-elevation"
-                                type="text"
-                            >
-                        </div>
+                                    <div class="editor-field">
+                                        <label for="title-align">Align</label>
+                                        <select id="title-align" class="custom-select">
+                                            <option value="center">Center</option>
+                                            <option value="start">Left</option>
+                                            <option value="end">Right</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <!-- Duration -->
-                        <div class="editor-stat">
-                            <label>
-                                <input
-                                    id="show-duration"
-                                    type="checkbox"
-                                    checked
-                                >
-                                Duration
-                            </label>
-                            <input
-                                id="editor-duration"
-                                type="text"
-                            >
+                            <div class="editor-section">
+                                <span class="section-title">Statistics</span>
 
-                            <select
-                                id="duration-format"
-                            >
-                                <option value="hms">
-                                    01h42m35s
-                                </option>
-                                <option value="clock">
-                                    01:42:35
-                                </option>
-                                <option value="prime">
-                                    01h42'35"
-                                </option>
-                                <option value="short">
-                                    01h42
-                                </option>
-                            </select>
+                                <div class="stat-card">
+                                    <label class="checkbox-label">
+                                        <input id="show-distance" type="checkbox" checked>
+                                        <span>Distance</span>
+                                    </label>
+                                    <div class="input-wrapper">
+                                        <input id="editor-distance" type="text" inputmode="decimal" pattern="[0-9]*[.,]?[0-9]*" placeholder="0">
+                                        <span class="unit-label">KM</span>
+                                    </div>
+                                </div>
+
+                                <div class="stat-card">
+                                    <label class="checkbox-label">
+                                        <input id="show-elevation" type="checkbox" checked>
+                                        <span>Elevation</span>
+                                    </label>
+                                    <div class="input-wrapper">
+                                        <input id="editor-elevation" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="0">
+                                        <span class="unit-label">M</span>
+                                    </div>
+                                </div>
+
+                                <div class="stat-card stat-card-vertical">
+                                    <div class="stat-card-header">
+                                        <label class="checkbox-label">
+                                            <input id="show-duration" type="checkbox" checked>
+                                            <span>Duration</span>
+                                        </label>
+                                    </div>
+
+                                    <div class="duration-inputs-grid">
+                                        <div class="input-wrapper">
+                                            <input id="editor-duration-hours" type="number" min="0" step="1" inputmode="numeric" placeholder="0">
+                                            <span class="unit-label">H</span>
+                                        </div>
+
+                                        <div class="input-wrapper">
+                                            <input id="editor-duration-minutes" type="number" min="0" max="59" step="1" inputmode="numeric" placeholder="0">
+                                            <span class="unit-label">M</span>
+                                        </div>
+
+                                        <div class="input-wrapper">
+                                            <input id="editor-duration-seconds" type="number" min="0" max="59" step="1" inputmode="numeric" placeholder="0">
+                                            <span class="unit-label">S</span>
+                                        </div>
+                                    </div>
+
+                                    <select id="duration-format" class="custom-select">
+                                        <option value="clock">12:34:56</option>
+                                        <option value="hms">12h34m56s</option>
+                                        <option value="prime">12h34'56"</option>
+                                        <option value="short">12h34</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
                         </div>
 
                         <div class="editor-footer" id="editor-footer">
-                            <button
-                                id="apply-editor"
-                                class="primary-button"
-                                type="button"
-                            >
+                            <button id="apply-editor" class="primary-button" type="button">
                                 Apply
+                            </button>
+                            <button id="close-editor" class="secondary-button" type="button">
+                                Close
+                            </button>
+                            <button id="reset-editor" class="secondary-button" type="button">
+                                Reset
                             </button>
                         </div>
 
@@ -360,11 +385,6 @@
                     </div>
 
                 </div>
-
-                <div
-                    class="activity-info"
-                    id="activity-info"
-                ></div>
 
             </div>
 

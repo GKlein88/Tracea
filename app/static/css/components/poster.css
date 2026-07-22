@@ -11,14 +11,6 @@
     border-radius: 24px;
 }
 
-/* .poster-viewer p {
-    text-align:center;
-    font-family:"SFUI", sans-serif;
-    font-weight:700;
-    font-size:32px;
-    color:var(--text-light);
-} */
-
 .poster-content {
     width:100%;
     height:100%;
@@ -41,6 +33,19 @@
     width:100%;
     height:100%;
     object-fit:contain;
+}
+
+
+/* Force title to uppercase in the DOM */
+#poster-title {
+    text-transform: uppercase;
+}
+
+/* Ensure inline SVG scales properly inside the container */
+.poster-content svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 

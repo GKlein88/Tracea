@@ -20,32 +20,16 @@ def generate_svg(
         size=(
             template.width,
             template.height
-        )
+        ),
+        # Add viewBox to make the inline SVG responsive in the DOM
+        viewBox=f"0 0 {template.width} {template.height}"
     )
 
     embed_fonts(dwg)
 
-    draw_background(
-        dwg,
-        template
-    )
-
-    draw_route(
-        dwg,
-        points,
-        template
-    )
-
-    draw_title(
-        dwg,
-        config,
-        template
-    )
-
-    draw_stats(
-        dwg,
-        config,
-        template
-    )
+    draw_background(dwg, template)
+    draw_route(dwg, points, template)
+    draw_title(dwg, config, template)
+    draw_stats(dwg, config, template)
 
     dwg.save()
